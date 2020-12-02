@@ -6,6 +6,7 @@
 
 int main()
 {
-
+    grid grid(3, 4);
+    grid.affichage();
     return EXIT_SUCCESS;
 }
