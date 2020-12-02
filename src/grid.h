@@ -26,6 +26,8 @@ public:
     //Destructeur---------------------------------------------------------------
     ~grid();
 
+    grid(const grid &copie);
+
     void modifhauteur(const int L, const int C, const int h);
 
     int indice(const int i, const int j);
