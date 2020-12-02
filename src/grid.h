@@ -23,10 +23,10 @@ public:
 
     grid(const string fichier);
 
+    grid(const grid &copie);
+
     //Destructeur---------------------------------------------------------------
     ~grid();
-
-    grid(const grid &copie);
 
     void modifhauteur(const int L, const int C, const int h);
 

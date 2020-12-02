@@ -67,22 +67,9 @@ grid::grid(const string fichier)
     {
       noeud *nouveau = new noeud;
       nouveau->hauteur = vec[i];
-      cout << vec[i] << " hauteur" << nouveau->hauteur << endl;
       g.push_back(nouveau);
     }
   }
-  /*
-  std::string str;
-  // Lisez la ligne suivante du fichier jusqu'à la fin.
-  while (std::getline(input, str))
-  {
-      // La ligne contient une chaîne de longueur > 0 puis l'enregistre dans un vecteur
-      if(str.size() > 0)
-      {
-          vecDeStrs.push_back(str);
-          cout << str << endl;
-      }
-  }*/
   //Close The File
   input.close();
 
