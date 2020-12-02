@@ -33,7 +33,6 @@ void grid::affichage()
 
 grid::grid(const string fichier)
 {
-  std::vector<std::string> vecDeStrs;
   // ouvrir fichier
   std::ifstream input(fichier);
 
@@ -41,6 +40,20 @@ grid::grid(const string fichier)
   {
       std::cerr << "Ne pas pouvoir ouvrir le fichier : "<<fichier<<std::endl;
   }
+  else
+  {
+    vector<int> vec((istream_iterator<int>(input)), istream_iterator<int>());
+    col = vec.at(0);
+    line = vec.at(1);
+    for(std::vector<int>::size_type i = 2; i != vec.size(); i++)
+    {
+      noeud *nouveau = new noeud;
+      nouveau->hauteur = vec[i];
+      cout << vec[i] << " hauteur" << nouveau->hauteur << endl;
+      g.push_back(nouveau);
+    }
+  }
+  /*
   std::string str;
   // Lisez la ligne suivante du fichier jusqu'à la fin.
   while (std::getline(input, str))
@@ -51,9 +64,10 @@ grid::grid(const string fichier)
           vecDeStrs.push_back(str);
           cout << str << endl;
       }
-  }
+  }*/
   //Close The File
   input.close();
+
 }
 
 void grid::modifhauteur(const int i, const int j, const int h)
