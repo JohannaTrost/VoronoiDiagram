@@ -27,27 +27,6 @@ grid::grid(const grid &copie)
     }
 }
 
-grid::~grid()
-{
-    for (noeud *n : g)
-        delete n;
-    g.clear();
-}
-
-void grid::affichage()
-{
-    int n = 0;
-    for (int i = 0; i < line; i++)
-    {
-        for (int j = 0; j < col; j++)
-        {
-            std::cout << g.at(n)->hauteur << "  ";
-            n++;
-        }
-
-        std::cout << std::endl;
-    }
-}
 
 grid::grid(const string fichier)
 {
@@ -70,9 +49,30 @@ grid::grid(const string fichier)
       g.push_back(nouveau);
     }
   }
-  //Close The File
+  //Close fichier
   input.close();
+}
 
+grid::~grid()
+{
+    for (noeud *n : g)
+        delete n;
+    g.clear();
+}
+
+void grid::affichage()
+{
+    int n = 0;
+    for (int i = 0; i < line; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            std::cout << g.at(n)->hauteur << "  ";
+            n++;
+        }
+
+        std::cout << std::endl;
+    }
 }
 
 void grid::modifhauteur(const int i, const int j, const int h)

@@ -4,12 +4,25 @@
 #include <time.h>
 #include <iostream>
 
-int main()
+int main(int argc, const char** argv)
 {
-    grid g ("../grille_ex1.txt");
-    g.affichage();
-    grid grid(3, 4);
-    grid.modifhauteur(2, 2, 5);
-    grid.affichage();
+    string filename(argv[1]);
+
+    // test constructeur avec fichier
+    grid gridDeFichier (filename);
+    gridDeFichier.affichage();
+
+    // test index nord
+    cout << "nord de " << gridDeFichier.hauteur(gridDeFichier.indice(2, 3)) <<
+         ": " << gridDeFichier.hauteur(gridDeFichier.indiceNord(2,3)) << endl;
+    // verifier s'il y a une valeur à l'est de (2,3)
+    if(!gridDeFichier.existEst(3))
+    cout << "Rien à l'est de " << gridDeFichier.hauteur(gridDeFichier.indice(2, 3)) << endl;
+
+    // test constructeur avec nb cols et lignes et modif d'hauteur
+    grid grid34(3, 4);
+    grid34.modifhauteur(2, 2, 5);
+    grid34.affichage();
+
     return EXIT_SUCCESS;
 }

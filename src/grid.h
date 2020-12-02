@@ -38,8 +38,8 @@ public:
 
     bool existNord(const int i);
     bool existSud(const int i);
-    bool existEst(const int i);
-    bool existOuest(const int i);
+    bool existEst(const int j);
+    bool existOuest(const int j);
 
     int indiceNord(const int i, const int j);
     int indiceSud(const int i, const int j);
