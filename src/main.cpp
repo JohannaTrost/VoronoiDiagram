@@ -6,6 +6,6 @@
 
 int main()
 {
-
+    grid g ("../grille_ex1.txt");
     return EXIT_SUCCESS;
 }

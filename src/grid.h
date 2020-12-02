@@ -1,6 +1,10 @@
 #ifndef _GRID
 #define _GRID
 #include <vector>
+#include <string>
+#include <fstream>
+
+using namespace std;
 
 class noeud
 {
@@ -16,6 +20,8 @@ public:
     //Constructeur-------------------------------------------------------------
     grid(const int C, const int L);
 
+    grid(const string fichier);
+
     //Destructeur---------------------------------------------------------------
     ~grid();
 
@@ -26,7 +32,7 @@ public:
     int ligne (const int indice);
     int colonne (const int indice);
     int hauteur (const int indice);
-    
+
 private:
     std::vector<noeud *> g;
     int col, line;
