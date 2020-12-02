@@ -29,9 +29,21 @@ public:
 
     int indice(const int i, const int j);
 
-    int ligne (const int indice);
-    int colonne (const int indice);
-    int hauteur (const int indice);
+    int ligne(const int indice);
+    int colonne(const int indice);
+    int hauteur(const int indice);
+
+    bool existNord(const int i);
+    bool existSud(const int i);
+    bool existEst(const int i);
+    bool existOuest(const int i);
+
+    int indiceNord(const int i, const int j);
+    int indiceSud(const int i, const int j);
+    int indiceEst(const int i, const int j);
+    int indiceOuest(const int i, const int j);
+
+    void affichage();
 
 private:
     std::vector<noeud *> g;
