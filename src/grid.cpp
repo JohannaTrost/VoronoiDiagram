@@ -32,3 +32,8 @@ int grid::ligne (const int indice)
 {
     return indice/col;
 }
+
+int grid::hauteur (const int indice)
+{
+    return g.at(indice)->hauteur;
+}
