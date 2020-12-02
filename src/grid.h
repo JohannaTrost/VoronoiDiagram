@@ -7,29 +7,20 @@ class noeud
     friend class grid;
 
 private:
+    int hauteur;
 };
 
 class grid
 {
 public:
     //Constructeur-------------------------------------------------------------
-    grid();
-
-    grid(const grid &grid);
-    //Postcondition : Aucunes
-
-    grid &operator=(const grid &copie);
-    //Précondition : aucune
-    //Postcondition :
+    grid(const int C, const int L);
 
     //Destructeur---------------------------------------------------------------
     ~grid();
 
 private:
-    void destructeur(const std::vector<noeud> g);
-    //Precondition : aucune
-    //Resultat :le noeud nd est détruit et destructeur() est appelé sur les fils existants de nd
-    std::vector<noeud> g;
+    std::vector<noeud *> g;
 };
 
 #endif

@@ -18,10 +18,6 @@ public:
     grid(const grid &grid);
     //Postcondition : Aucunes
 
-    grid &operator=(const grid &copie);
-    //Précondition : aucune
-    //Postcondition :
-
     //Destructeur---------------------------------------------------------------
     ~grid();
 
