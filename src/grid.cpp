@@ -14,6 +14,19 @@ grid::grid(const int L, const int C)
     line = L;
 }
 
+grid::grid(const grid &copie)
+{
+
+    col = copie.col;
+    line = copie.line;
+    for (unsigned int i = 0; i < copie.g.size(); i++)
+    {
+        noeud *nouveau = new noeud;
+        nouveau->hauteur = copie.g.at(i)->hauteur;
+        g.push_back(nouveau);
+    }
+}
+
 grid::~grid()
 {
     for (noeud *n : g)
