@@ -9,6 +9,7 @@ int main()
     grid g ("../grille_ex1.txt");
     g.affichage();
     grid grid(3, 4);
+    grid.modifhauteur(2, 2, 5);
     grid.affichage();
     return EXIT_SUCCESS;
 }
