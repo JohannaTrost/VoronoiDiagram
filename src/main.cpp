@@ -4,20 +4,19 @@
 #include <time.h>
 #include <iostream>
 
-int main(int argc, const char** argv)
+int main(int argc, const char **argv)
 {
     string filename(argv[1]);
 
     // test constructeur avec fichier
-    grid gridDeFichier (filename);
+    grid gridDeFichier(filename);
     gridDeFichier.affichage();
 
     // test index nord
-    cout << "nord de " << gridDeFichier.hauteur(gridDeFichier.indice(2, 3)) <<
-         ": " << gridDeFichier.hauteur(gridDeFichier.indiceNord(2,3)) << endl;
+    cout << "nord de " << gridDeFichier.hauteur(gridDeFichier.indice(2, 3)) << ": " << gridDeFichier.hauteur(gridDeFichier.indiceNord(2, 3)) << endl;
     // verifier s'il y a une valeur à l'est de (2,3)
-    if(!gridDeFichier.existEst(3))
-    cout << "Rien à l'est de " << gridDeFichier.hauteur(gridDeFichier.indice(2, 3)) << endl;
+    if (!gridDeFichier.existEst(3))
+        cout << "Rien à l'est de " << gridDeFichier.hauteur(gridDeFichier.indice(2, 3)) << endl;
 
     // test constructeur avec nb cols et lignes et modif d'hauteur
     grid grid34(3, 4);
