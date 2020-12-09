@@ -9,7 +9,7 @@ grid::grid(const int L, const int C) //Constructeur avec paramètres
         g.push_back(nouveau); //On met le noeud à la suite dans le tableau
     }
 
-    col = C;  //Le nombre de colonnes de la grille est C
+    col = C;  //Le nombre de(g.colonnes de la grille est C
     line = L; //Le nombre de lignes de la grille est L
 }
 
@@ -59,7 +59,7 @@ grid::~grid() //destructeur
 
 int grid::getTaille() const
 {
-  return col*lin;
+  return col*line;
 }
 
 void grid::affichage()
@@ -67,7 +67,7 @@ void grid::affichage()
     int n = 0;
     for (int i = 0; i < line; i++) //On parcours les lignes
     {
-        for (int j = 0; j < col; j++) //On parcours les colonnes
+        for (int j = 0; j < col; j++) //On parcours les(g.colonnes
         {
             std::cout << g.at(n)->hauteur << "  ";
             n++;
@@ -99,7 +99,7 @@ int grid::indice(const int i, const int j)
 int grid::colonne(const int indice)
 {
     if ((unsigned int)indice < g.size() && indice >= 0) //On verifie que l'indice du noeud est dans le tableau
-        return indice % col;                            //On retourne la colonne de la grille dans laquelle le noeud est
+        return indice % col;                            //On retourne la(g.colonne de la grille dans laquelle le noeud est
     else
     {
         std::cout << "ce noeud n'existe pas" << std::endl;
@@ -154,8 +154,8 @@ bool grid::existSud(const int i)
 
 bool grid::existEst(const int j)
 {
-    if (j < col && j >= 0)  //On verifie que la colonne du noeud est dans la grille
-        return j + 1 < col; //On retourne si la colonne à sa droite existe
+    if (j < col && j >= 0)  //On verifie que la(g.colonne du noeud est dans la grille
+        return j + 1 < col; //On retourne si la(g.colonne à sa droite existe
     else
     {
         // std::cout << "ce noeud n'existe pas" << std::endl;
@@ -165,8 +165,8 @@ bool grid::existEst(const int j)
 
 bool grid::existOuest(const int j)
 {
-    if (j < col && j >= 0) //On verifie que la colonne du noeud est dans la grille
-        return j - 1 >= 0; //On retourne si la colonne à sa gauche existe
+    if (j < col && j >= 0) //On verifie que la(g.colonne du noeud est dans la grille
+        return j - 1 >= 0; //On retourne si la(g.colonne à sa gauche existe
     else
     {
         // std::cout << "ce noeud n'existe pas" << std::endl;
@@ -249,7 +249,7 @@ void ParcoursLargeur::parcoursEnLargeur(grid & g, const int indiceDepart)
       // init tableau parcours largeur
       for (int i = 0; i < g.getTaille(); i++)
       {
-          noeudParcoursProf *nouveau = new noeudParcoursProf;
+          noeudParcoursLarg *nouveau = new noeudParcoursProf;
           nouveau->distance = INT_MAX; //On met la hauteur de tous les noeuds à 0
           nouveau->pere = INT_MAX;
           nouveau->couleur = 'b';
@@ -269,39 +269,67 @@ void ParcoursLargeur::parcoursEnLargeur(grid & g, const int indiceDepart)
       {
         sommetFile = file.begin();
         u = file[sommetFile];
-        if(g.existEst(colonne(u)) &&
-           pl[g.indiceEst(ligne(u), colonne(u))]->couleur == 'b')
+        if(g.existEst(g.colonne(u)) &&
+           pl[g.indiceEst(g.ligne(u), g.colonne(u))]->couleur == 'b')
         {
-          est = g.indiceEst(ligne(u), colonne(u));
+          est = g.indiceEst(g.ligne(u), g.colonne(u));
           pl[est]->couleur = 'g';
           pl[est]->pere = u;
           file.push_back(est);
         }
-        if(g.existOuest(colonne(u)) &&
-           pl[g.indiceOuest(ligne(u), colonne(u))]->couleur == 'b')
+        if(g.existOuest(g.colonne(u)) &&
+           pl[g.indiceOuest(g.ligne(u), g.colonne(u))]->couleur == 'b')
         {
-          ouest = g.indiceOuest(ligne(u), colonne(u));
+          ouest = g.indiceOuest(g.ligne(u),(g.colonne(u));
           pl[ouest]->couleur = 'g';
           pl[ouest]->pere = u;
           file.push_back(ouest);
         }
-        if(g.existNord(ligne(u)) &&
-           pl[g.indiceNord(ligne(u), colonne(u))]->couleur == 'b')
+        if(g.existNord(g.ligne(u)) &&
+           pl[g.indiceNord(g.ligne(u),(g.colonne(u))]->couleur == 'b')
         {
-          nord = g.indiceOuest(ligne(u), colonne(u));
+          nord = g.indiceOuest(g.ligne(u),(g.colonne(u));
           pl[nord]->couleur = 'g';
           pl[nord]->pere = u;
           file.push_back(nord);
         }
-        if(g.existSud(ligne(u)) &&
-           pl[g.indiceSud(ligne(u), colonne(u))]->couleur == 'b')
+        if(g.existSud(g.ligne(u)) &&
+           pl[g.indiceSud(g.ligne(u),(g.colonne(u))]->couleur == 'b')
         {
-          sud = g.indiceSud(ligne(u), colonne(u));
+          sud = g.indiceSud(g.ligne(u),(g.colonne(u));
           pl[sud]->couleur = 'g';
           pl[sud]->pere = u;
           file.push_back(sud);
+          pl[sud]->distance = g.distanceVoisin(sud, u) + pl[sud]->distance;
         }
-
+        file.erase(file.begin());
+        pl[sommetFile]->couleur = 'n';
       }
+}
 
+std::vector<int> ParcoursLargeur::vecVoisins(const int indice, grid graphe)
+{
+    std::vector<int> vec;
+    int i = graphe.ligne(indice);
+    int j = graphe.colonne(indice);
+
+    int x = graphe.indiceOuest(i, j);
+    if (x != -1)
+        vec.push_back(x);
+
+    x = graphe.indiceNord(i, j);
+    if (x != -1)
+        vec.push_back(x);
+
+    x = graphe.indiceEst(i, j);
+    if (x != -1)
+        vec.push_back(x);
+
+    x = graphe.indiceSud(i, j);
+    if (x != -1)
+        vec.push_back(x);
+
+    // for (unsigned int i = 0; i < vec.size(); i++)
+    //     std::cout << vec.at(i) << std::endl;
+    return vec;
 }

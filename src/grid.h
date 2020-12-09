@@ -17,24 +17,16 @@ private:
     int hauteur; //La hauteur du noeud
 };
 
-class noeudParcoursProf
+class noeudParcoursLarg
 {
     friend class grid;
 
-private:
+public:
     char couleur;
     int pere;
     int distance;
 };
 
-class ParcoursLargeur
-{
-public:
-
-private:
-    std::vector<noeudParcoursLargeur *> pl;
-    void parcoursEnLargeur(grid & g);
-};
 
 class grid
 {
@@ -113,11 +105,21 @@ public:
     //Précondition : indice a et b compris dans la grille
     //Résultat : revoie la distance euclidienne entre l'indice a et b en prenant en compte ses hauteurs
 
-    vector<float> parcoursEnLargeur(const int i, const int j);
+
 
 private:
     std::vector<noeud *> g; //Le tableau 1D de noeuds
     int col, line;          //Nombre de colonne et de lignes de la grille
+};
+
+class ParcoursLargeur
+{
+friend class grid;
+
+public:
+    std::vector<noeudParcoursLarg *> pl;
+    void parcoursEnLargeur(grid & g, const int indiceDepart);
+    std::vector<int> vecVoisins(const int indice, grid graphe);
 };
 
 #endif
