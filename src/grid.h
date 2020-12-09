@@ -47,6 +47,10 @@ public:
 
     int getTaille() const;
 
+    int getLine() const;
+
+    int getCol() const;
+
     void modifhauteur(const int L, const int C, const int h);
     //Précondition : L et C compris dans la grille
     //Résultat : la hauteur du noeud L,C est h
@@ -119,8 +123,14 @@ friend class grid;
 
 public:
     std::vector<noeudParcoursLarg *> pl;
+
     ParcoursLargeur(grid & g, const int indiceDepart);
+
     std::vector<int> vecVoisins(const int indice, grid graphe);
+
+    void affichage(const grid g) const;
+    //Précondition : None
+
 };
 
 #endif

@@ -62,6 +62,18 @@ int grid::getTaille() const
   return col*line;
 }
 
+
+int grid::getLine() const
+{
+  return line;
+}
+
+int grid::getCol() const
+{
+  return col;
+}
+
+
 void grid::affichage()
 {
     int n = 0;
@@ -255,8 +267,9 @@ ParcoursLargeur::ParcoursLargeur(grid & g, const int indiceDepart)
           nouveau->couleur = 'b';
           pl.push_back(nouveau); //On met le noeud à la suite dans le tableau
       }
-      pl.at(indiceDepart)->pere = 0;
+      pl.at(indiceDepart)->pere = -1;
       pl.at(indiceDepart)->couleur = 'g';
+      pl.at(indiceDepart)->distance = 0;
       vector<int> file;
       file.push_back(indiceDepart);
       int u;
@@ -270,12 +283,14 @@ ParcoursLargeur::ParcoursLargeur(grid & g, const int indiceDepart)
           pl.at(successeurs.at(i))->couleur = 'g';
           pl.at(successeurs.at(i))->pere = u;
           file.push_back(successeurs.at(i));
-          pl.at(successeurs.at(i))->distance = g.distanceVoisin(successeurs.at(i), u) + pl[successeurs.at(i)]->distance;
+          pl.at(successeurs.at(i))->distance = g.distanceVoisin(successeurs.at(i), u) + pl.at(u)->distance;
         }
         file.erase(file.begin());
         pl.at(u)->couleur = 'n';
       }
 }
+
+~ParcoursLargeur();
 
 std::vector<int> ParcoursLargeur::vecVoisins(const int indice, grid graphe)
 {
@@ -302,4 +317,20 @@ std::vector<int> ParcoursLargeur::vecVoisins(const int indice, grid graphe)
     // for (unsigned int i = 0; i < vec.size(); i++)
     //     std::cout << vec.at(i) << std::endl;
     return vec;
+}
+
+
+void ParcoursLargeur::affichage(const grid g) const
+{
+    int n = 0;
+    for (int i = 0; i < g.getLine(); i++) //On parcours les lignes
+    {
+        for (int j = 0; j < g.getCol(); j++) //On parcours les(g.colonnes
+        {
+            std::cout << pl.at(n)->distance << "  ";
+            n++;
+        }
+
+        std::cout << std::endl;
+    }
 }
