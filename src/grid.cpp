@@ -57,6 +57,11 @@ grid::~grid() //destructeur
     g.clear();    //Puis on vide le vecteur
 }
 
+int grid::getTaille() const
+{
+  return col*lin;
+}
+
 void grid::affichage()
 {
     int n = 0;
@@ -233,8 +238,70 @@ int grid::indiceOuest(const int i, const int j)
     }
 }
 
-float grid::distance(const int indiceA, const int indiceB)
+float grid::distanceVoisin(const int indiceA, const int indiceB)
 {
   int diffAB= hauteur(indiceA) - hauteur(indiceB);
   return sqrt(1+diffAB*diffAB); // distance euclidienne
+}
+
+void ParcoursLargeur::parcoursEnLargeur(grid & g, const int indiceDepart)
+{
+      // init tableau parcours largeur
+      for (int i = 0; i < g.getTaille(); i++)
+      {
+          noeudParcoursProf *nouveau = new noeudParcoursProf;
+          nouveau->distance = INT_MAX; //On met la hauteur de tous les noeuds à 0
+          nouveau->pere = INT_MAX;
+          nouveau->couleur = 'b';
+          pl.push_back(nouveau); //On met le noeud à la suite dans le tableau
+      }
+      pl.at(indiceDepart)->pere = 0;
+      pl.at(indiceDepart)->couleur = 'g';
+      vector<int> file;
+      file.push_back(indiceDepart);
+      int u;
+      int est;
+      int ouest;
+      int sud;
+      int nord;
+      auto sommetFile;
+      while(file.empty())
+      {
+        sommetFile = file.begin();
+        u = file[sommetFile];
+        if(g.existEst(colonne(u)) &&
+           pl[g.indiceEst(ligne(u), colonne(u))]->couleur == 'b')
+        {
+          est = g.indiceEst(ligne(u), colonne(u));
+          pl[est]->couleur = 'g';
+          pl[est]->pere = u;
+          file.push_back(est);
+        }
+        if(g.existOuest(colonne(u)) &&
+           pl[g.indiceOuest(ligne(u), colonne(u))]->couleur == 'b')
+        {
+          ouest = g.indiceOuest(ligne(u), colonne(u));
+          pl[ouest]->couleur = 'g';
+          pl[ouest]->pere = u;
+          file.push_back(ouest);
+        }
+        if(g.existNord(ligne(u)) &&
+           pl[g.indiceNord(ligne(u), colonne(u))]->couleur == 'b')
+        {
+          nord = g.indiceOuest(ligne(u), colonne(u));
+          pl[nord]->couleur = 'g';
+          pl[nord]->pere = u;
+          file.push_back(nord);
+        }
+        if(g.existSud(ligne(u)) &&
+           pl[g.indiceSud(ligne(u), colonne(u))]->couleur == 'b')
+        {
+          sud = g.indiceSud(ligne(u), colonne(u));
+          pl[sud]->couleur = 'g';
+          pl[sud]->pere = u;
+          file.push_back(sud);
+        }
+
+      }
+
 }

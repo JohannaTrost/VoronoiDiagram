@@ -6,6 +6,7 @@
 #include <iterator>
 #include <iostream>
 #include <cmath>
+
 using namespace std;
 
 class noeud
@@ -14,6 +15,25 @@ class noeud
 
 private:
     int hauteur; //La hauteur du noeud
+};
+
+class noeudParcoursProf
+{
+    friend class grid;
+
+private:
+    char couleur;
+    int pere;
+    int distance;
+};
+
+class ParcoursLargeur
+{
+public:
+
+private:
+    std::vector<noeudParcoursLargeur *> pl;
+    void parcoursEnLargeur(grid & g);
 };
 
 class grid
@@ -31,6 +51,8 @@ public:
 
     //Destructeur---------------------------------------------------------------
     ~grid();
+
+    int getTaille() const;
 
     void modifhauteur(const int L, const int C, const int h);
     //Précondition : L et C compris dans la grille
@@ -87,10 +109,11 @@ public:
     void affichage();
     //Précondition : None
 
-    float distance(const int indiceA, const int indiceB);
+    float distanceVoisin(const int indiceA, const int indiceB);
     //Précondition : indice a et b compris dans la grille
     //Résultat : revoie la distance euclidienne entre l'indice a et b en prenant en compte ses hauteurs
 
+    vector<float> parcoursEnLargeur(const int i, const int j);
 
 private:
     std::vector<noeud *> g; //Le tableau 1D de noeuds
