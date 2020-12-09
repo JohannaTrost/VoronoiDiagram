@@ -274,7 +274,7 @@ ParcoursLargeur::ParcoursLargeur(grid &g, const int indiceDepart)
       file.push_back(indiceDepart);
       int u;
       vector<int> successeurs;
-      while(file.empty())
+      while(!file.empty())
       {
         u = file.front();
         successeurs = vecVoisins(u, g);

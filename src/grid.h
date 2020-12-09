@@ -121,7 +121,6 @@ class ParcoursLargeur
 public:
     ~ParcoursLargeur();
 
-    ParcoursLargeur(grid &g, const int indiceDepart);
     std::vector<noeudParcoursLarg *> pl;
 
     ParcoursLargeur(grid & g, const int indiceDepart);
