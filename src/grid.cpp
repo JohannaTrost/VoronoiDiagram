@@ -255,7 +255,7 @@ float grid::distanceVoisin(const int indiceA, const int indiceB)
     int diffAB = hauteur(indiceA) - hauteur(indiceB);
     return sqrt(1 + diffAB * diffAB); // distance euclidienne
 }
-
+/*
 ParcoursLargeur::ParcoursLargeur(grid &g, const int indiceDepart)
 {
       // init tableau parcours largeur
@@ -278,24 +278,28 @@ ParcoursLargeur::ParcoursLargeur(grid &g, const int indiceDepart)
       {
         u = file.front();
         successeurs = vecVoisins(u, g);
-        for (int i = 0; successeurs.size(); i++)
+        for (int i = 0; i < successeurs.size(); i++)
         {
-          pl.at(successeurs.at(i))->couleur = 'g';
-          pl.at(successeurs.at(i))->pere = u;
-          file.push_back(successeurs.at(i));
-          pl.at(successeurs.at(i))->distance = g.distanceVoisin(successeurs.at(i), u) + pl.at(u)->distance;
+          if(pl.at(successeurs.at(i))->couleur == 'b')
+          {
+            pl.at(successeurs.at(i))->couleur = 'g';
+            pl.at(successeurs.at(i))->pere = u;
+            file.push_back(successeurs.at(i));
+            pl.at(successeurs.at(i))->distance = g.distanceVoisin(successeurs.at(i), u) + pl.at(u)->distance;
+          }
         }
         file.erase(file.begin());
         pl.at(u)->couleur = 'n';
     }
 }
-
+*/
 ParcoursLargeur::~ParcoursLargeur() //destructeur
 {
     for (noeudParcoursLarg *n : pl)
         delete n; //On detruit chaque noeud
     pl.clear();   //Puis on vide le vecteur
 }
+
 
 std::vector<int> ParcoursLargeur::vecVoisins(const int indice, grid graphe)
 {
@@ -304,19 +308,19 @@ std::vector<int> ParcoursLargeur::vecVoisins(const int indice, grid graphe)
     int j = graphe.colonne(indice);
 
     int x = graphe.indiceOuest(i, j);
-    if (x != -1)
+    if (x != -1 && x != -2)
         vec.push_back(x);
 
     x = graphe.indiceNord(i, j);
-    if (x != -1)
+    if (x != -1 && x != -2)
         vec.push_back(x);
 
     x = graphe.indiceEst(i, j);
-    if (x != -1)
+    if (x != -1 && x != -2)
         vec.push_back(x);
 
     x = graphe.indiceSud(i, j);
-    if (x != -1)
+    if (x != -1 && x != -2)
         vec.push_back(x);
 
     // for (unsigned int i = 0; i < vec.size(); i++)
@@ -324,6 +328,58 @@ std::vector<int> ParcoursLargeur::vecVoisins(const int indice, grid graphe)
     return vec;
 }
 
+
+ParcoursLargeur::ParcoursLargeur(grid &g, const int indiceDepart)
+{
+    // init tableau parcours largeur
+    for (int i = 0; i < g.getTaille(); i++)
+    {
+        noeudParcoursLarg *nouveau = new noeudParcoursLarg;
+        nouveau->distance = INT32_MAX; //On met la hauteur de tous les noeuds à 0
+        nouveau->pere = INT32_MAX;
+        nouveau->couleur = 'b';
+        pl.push_back(nouveau); //On met le noeud à la suite dans le tableau
+    }
+    pl.at(indiceDepart)->pere = -1;
+    pl.at(indiceDepart)->couleur = 'n';
+    pl.at(indiceDepart)->distance = 0;
+    vector<int> file;
+    file.push_back(indiceDepart);
+    int u;
+    vector<int> successeurs;
+    while (!file.empty())
+    {
+        u = minimum(file, pl);
+
+        successeurs = vecVoisins(u, g);
+
+        for (unsigned int i = 0; i < successeurs.size(); i++)
+            if (pl.at(successeurs.at(i))->couleur == 'b')
+            {
+                pl.at(successeurs.at(i))->couleur = 'g';
+                pl.at(successeurs.at(i))->pere = u;
+                file.push_back(successeurs.at(i));
+                pl.at(successeurs.at(i))->distance = g.distanceVoisin(successeurs.at(i), u) + pl[u]->distance;
+            }
+        file.erase(file.begin());
+        pl.at(u)->couleur = 'n';
+    }
+}
+
+int ParcoursLargeur::minimum(std::vector<int> f, std::vector<noeudParcoursLarg *> pl)
+{
+    int min = pl.at(f.at(0))->distance;
+    int indice = 0;
+    for (unsigned int i = 1; i < f.size(); i++)
+        if (min > pl.at(f.at(i))->distance)
+        {
+            min = pl.at(f.at(i))->distance;
+            indice = f.at(i);
+        }
+
+    //std::cout << pl.at(indice)->distance << std::endl;
+    return indice;
+}
 
 void ParcoursLargeur::affichage(const grid g) const
 {

@@ -25,7 +25,7 @@ class noeudParcoursLarg
 public:
     char couleur;
     int pere;
-    int distance;
+    float distance;
 };
 
 class grid
@@ -129,6 +129,8 @@ public:
 
     void affichage(const grid g) const;
     //Précondition : None
+
+    int minimum(std::vector<int> f, std::vector<noeudParcoursLarg *> pl);
 
 };
 
