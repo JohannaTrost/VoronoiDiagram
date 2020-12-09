@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iterator>
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 class noeud
@@ -85,6 +86,11 @@ public:
 
     void affichage();
     //Précondition : None
+
+    float distance(const int indiceA, const int indiceB);
+    //Précondition : indice a et b compris dans la grille
+    //Résultat : revoie la distance euclidienne entre l'indice a et b en prenant en compte ses hauteurs
+
 
 private:
     std::vector<noeud *> g; //Le tableau 1D de noeuds

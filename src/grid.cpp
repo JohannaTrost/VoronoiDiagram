@@ -232,3 +232,9 @@ int grid::indiceOuest(const int i, const int j)
         return -1; //On retourne -1 si le noeud n'existe pas
     }
 }
+
+float grid::distance(const int indiceA, const int indiceB)
+{
+  int diffAB= hauteur(indiceA) - hauteur(indiceB);
+  return sqrt(1+diffAB*diffAB); // distance euclidienne
+}
