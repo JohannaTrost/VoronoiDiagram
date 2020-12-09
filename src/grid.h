@@ -6,6 +6,7 @@
 #include <iterator>
 #include <iostream>
 #include <cmath>
+#include <stdint.h>
 
 using namespace std;
 
