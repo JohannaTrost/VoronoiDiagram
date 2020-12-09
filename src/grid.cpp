@@ -244,7 +244,7 @@ float grid::distanceVoisin(const int indiceA, const int indiceB)
   return sqrt(1+diffAB*diffAB); // distance euclidienne
 }
 
-void ParcoursLargeur::parcoursEnLargeur(grid & g, const int indiceDepart)
+ParcoursLargeur::ParcoursLargeur(grid & g, const int indiceDepart)
 {
       // init tableau parcours largeur
       for (int i = 0; i < g.getTaille(); i++)
@@ -260,22 +260,20 @@ void ParcoursLargeur::parcoursEnLargeur(grid & g, const int indiceDepart)
       vector<int> file;
       file.push_back(indiceDepart);
       int u;
-      auto sommetFile;
       vector<int> successeurs;
       while(file.empty())
       {
-        sommetFile = file.begin();
-        u = file[sommetFile];
+        u = file.front();
         successeurs = vecVoisins(u, g);
         for(int i = 0; successeurs.size(); i++)
         {
-          pl[successeurs.at(i)]->couleur = 'g';
-          pl[successeurs.at(i)]->pere = u;
+          pl.at(successeurs.at(i))->couleur = 'g';
+          pl.at(successeurs.at(i))->pere = u;
           file.push_back(successeurs.at(i));
-          pl[successeurs.at(i)]->distance = g.distanceVoisin(successeurs.at(i), u) + pl[successeurs.at(i)]->distance;
+          pl.at(successeurs.at(i))->distance = g.distanceVoisin(successeurs.at(i), u) + pl[successeurs.at(i)]->distance;
         }
         file.erase(file.begin());
-        pl[sommetFile]->couleur = 'n';
+        pl.at(u)->couleur = 'n';
       }
 }
 

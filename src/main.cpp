@@ -24,7 +24,7 @@ int main(int argc, const char **argv)
     grid34.affichage();
 
     // test fonction de distance
-    cout << "Distance entre (0,0) et (0,1): " << gridDeFichier.distance(gridDeFichier.indice(0,0), gridDeFichier.indice(0,1)) << endl;
+    cout << "Distance entre (0,0) et (0,1): " << gridDeFichier.distanceVoisin(gridDeFichier.indice(0,0), gridDeFichier.indice(0,1)) << endl;
 
     return EXIT_SUCCESS;
 }

@@ -119,7 +119,7 @@ friend class grid;
 
 public:
     std::vector<noeudParcoursLarg *> pl;
-    void parcoursEnLargeur(grid & g, const int indiceDepart);
+    ParcoursLargeur(grid & g, const int indiceDepart);
     std::vector<int> vecVoisins(const int indice, grid graphe);
 };
 
