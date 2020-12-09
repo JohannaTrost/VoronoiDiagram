@@ -59,7 +59,7 @@ grid::~grid() //destructeur
 
 int grid::getTaille() const
 {
-  return col*line;
+    return col * line;
 }
 
 void grid::affichage()
@@ -240,41 +240,41 @@ int grid::indiceOuest(const int i, const int j)
 
 float grid::distanceVoisin(const int indiceA, const int indiceB)
 {
-  int diffAB= hauteur(indiceA) - hauteur(indiceB);
-  return sqrt(1+diffAB*diffAB); // distance euclidienne
+    int diffAB = hauteur(indiceA) - hauteur(indiceB);
+    return sqrt(1 + diffAB * diffAB); // distance euclidienne
 }
 
-ParcoursLargeur::ParcoursLargeur(grid & g, const int indiceDepart)
+ParcoursLargeur::ParcoursLargeur(grid &g, const int indiceDepart)
 {
-      // init tableau parcours largeur
-      for (int i = 0; i < g.getTaille(); i++)
-      {
-          noeudParcoursLarg *nouveau = new noeudParcoursLarg;
-          nouveau->distance = INT32_MAX; //On met la hauteur de tous les noeuds à 0
-          nouveau->pere = INT32_MAX;
-          nouveau->couleur = 'b';
-          pl.push_back(nouveau); //On met le noeud à la suite dans le tableau
-      }
-      pl.at(indiceDepart)->pere = 0;
-      pl.at(indiceDepart)->couleur = 'g';
-      vector<int> file;
-      file.push_back(indiceDepart);
-      int u;
-      vector<int> successeurs;
-      while(file.empty())
-      {
+    // init tableau parcours largeur
+    for (int i = 0; i < g.getTaille(); i++)
+    {
+        noeudParcoursLarg *nouveau = new noeudParcoursLarg;
+        nouveau->distance = INT32_MAX; //On met la hauteur de tous les noeuds à 0
+        nouveau->pere = INT32_MAX;
+        nouveau->couleur = 'b';
+        pl.push_back(nouveau); //On met le noeud à la suite dans le tableau
+    }
+    pl.at(indiceDepart)->pere = 0;
+    pl.at(indiceDepart)->couleur = 'g';
+    vector<int> file;
+    file.push_back(indiceDepart);
+    int u;
+    vector<int> successeurs;
+    while (file.empty())
+    {
         u = file.front();
         successeurs = vecVoisins(u, g);
-        for(int i = 0; successeurs.size(); i++)
+        for (int i = 0; successeurs.size(); i++)
         {
-          pl.at(successeurs.at(i))->couleur = 'g';
-          pl.at(successeurs.at(i))->pere = u;
-          file.push_back(successeurs.at(i));
-          pl.at(successeurs.at(i))->distance = g.distanceVoisin(successeurs.at(i), u) + pl[successeurs.at(i)]->distance;
+            pl.at(successeurs.at(i))->couleur = 'g';
+            pl.at(successeurs.at(i))->pere = u;
+            file.push_back(successeurs.at(i));
+            pl.at(successeurs.at(i))->distance = g.distanceVoisin(successeurs.at(i), u) + pl[successeurs.at(i)]->distance;
         }
         file.erase(file.begin());
         pl.at(u)->couleur = 'n';
-      }
+    }
 }
 
 std::vector<int> ParcoursLargeur::vecVoisins(const int indice, grid graphe)
@@ -302,4 +302,11 @@ std::vector<int> ParcoursLargeur::vecVoisins(const int indice, grid graphe)
     // for (unsigned int i = 0; i < vec.size(); i++)
     //     std::cout << vec.at(i) << std::endl;
     return vec;
+}
+
+ParcoursLargeur::~ParcoursLargeur() //destructeur
+{
+    for (noeudParcoursLarg *n : pl)
+        delete n; //On detruit chaque noeud
+    pl.clear();   //Puis on vide le vecteur
 }
