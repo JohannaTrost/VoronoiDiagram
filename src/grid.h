@@ -130,7 +130,7 @@ public:
     void affichage(const grid g) const;
     //Précondition : None
 
-    int minimum(std::vector<int> f, std::vector<noeudParcoursLarg *> pl);
+    int defileMinimum(std::vector<int> & f, std::vector<noeudParcoursLarg *> pl);
 
 };
 

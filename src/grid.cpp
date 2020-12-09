@@ -345,11 +345,12 @@ ParcoursLargeur::ParcoursLargeur(grid &g, const int indiceDepart)
     vector<int> successeurs;
     while (!file.empty())
     {
-        u = minimum(file, pl);
+        u = defileMinimum(file, pl);
 
         successeurs = vecVoisins(u, g);
 
         for (unsigned int i = 0; i < successeurs.size(); i++)
+        {
             if (pl.at(successeurs.at(i))->couleur == 'b')
             {
                 pl.at(successeurs.at(i))->couleur = 'g';
@@ -357,23 +358,26 @@ ParcoursLargeur::ParcoursLargeur(grid &g, const int indiceDepart)
                 pl.at(successeurs.at(i))->distance = g.distanceVoisin(successeurs.at(i), u) + pl[u]->distance;
                 file.push_back(successeurs.at(i));
             }
-        file.erase(file.begin());
+        }
         pl.at(u)->couleur = 'n';
     }
 }
 
-int ParcoursLargeur::minimum(std::vector<int> f, std::vector<noeudParcoursLarg *> pl)
+int ParcoursLargeur::defileMinimum(std::vector<int> & f, std::vector<noeudParcoursLarg *> pl)
 {
     float min = pl.at(f.at(0))->distance;
     int indice = f.at(0);
+    int indiceFile = 0;
     for (unsigned int i = 1; i < f.size(); i++)
     {
         if (min > pl.at(f.at(i))->distance)
         {
             min = pl.at(f.at(i))->distance;
             indice = f.at(i);
+            indiceFile = i;
         }
     }
+    f.erase(f.begin() + indiceFile);
     return indice;
 }
 
