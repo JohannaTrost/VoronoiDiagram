@@ -59,7 +59,7 @@ grid::~grid() //destructeur
 
 int grid::getTaille() const
 {
-  return col*line;
+    return col * line;
 }
 
 
@@ -252,11 +252,11 @@ int grid::indiceOuest(const int i, const int j)
 
 float grid::distanceVoisin(const int indiceA, const int indiceB)
 {
-  int diffAB= hauteur(indiceA) - hauteur(indiceB);
-  return sqrt(1+diffAB*diffAB); // distance euclidienne
+    int diffAB = hauteur(indiceA) - hauteur(indiceB);
+    return sqrt(1 + diffAB * diffAB); // distance euclidienne
 }
 
-ParcoursLargeur::ParcoursLargeur(grid & g, const int indiceDepart)
+ParcoursLargeur::ParcoursLargeur(grid &g, const int indiceDepart)
 {
       // init tableau parcours largeur
       for (int i = 0; i < g.getTaille(); i++)
@@ -278,7 +278,7 @@ ParcoursLargeur::ParcoursLargeur(grid & g, const int indiceDepart)
       {
         u = file.front();
         successeurs = vecVoisins(u, g);
-        for(int i = 0; successeurs.size(); i++)
+        for (int i = 0; successeurs.size(); i++)
         {
           pl.at(successeurs.at(i))->couleur = 'g';
           pl.at(successeurs.at(i))->pere = u;
@@ -287,10 +287,15 @@ ParcoursLargeur::ParcoursLargeur(grid & g, const int indiceDepart)
         }
         file.erase(file.begin());
         pl.at(u)->couleur = 'n';
-      }
+    }
 }
 
-~ParcoursLargeur();
+ParcoursLargeur::~ParcoursLargeur() //destructeur
+{
+    for (noeudParcoursLarg *n : pl)
+        delete n; //On detruit chaque noeud
+    pl.clear();   //Puis on vide le vecteur
+}
 
 std::vector<int> ParcoursLargeur::vecVoisins(const int indice, grid graphe)
 {
