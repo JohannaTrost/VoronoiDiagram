@@ -32,8 +32,7 @@ int main(int argc, const char **argv)
     cout << "Distance entre (0,0) et (0,1): " << grid34.distanceVoisin(grid34.indice(0, 0), grid34.indice(0, 1)) << endl;
 
     ParcoursLargeur parcours1(grid34, 0);
-    parcours.affichage(grid34);
-
+    parcours1.affichage(grid34);
 
     return EXIT_SUCCESS;
 }
