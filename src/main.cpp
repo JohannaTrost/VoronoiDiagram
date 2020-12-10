@@ -20,7 +20,6 @@ int main(int argc, const char **argv)
 
     // test constructeur avec nb cols et lignes et modif d'hauteur
     grid grid34(3, 4);
-    grid34.modifhauteur(2, 2, 5);
     grid34.affichage();
 
     // test fonction de distance
@@ -29,6 +28,7 @@ int main(int argc, const char **argv)
     vector<int> vecIndices;
     vecIndices.push_back(0);
     vecIndices.push_back(5);
+    vecIndices.push_back(6);
 
     ParcoursLargeur parcours(gridDeFichier, vecIndices);
     parcours.affichage(gridDeFichier);

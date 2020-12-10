@@ -334,6 +334,7 @@ ParcoursLargeur::ParcoursLargeur(grid &g, const vector<int> indiceDepart)
         noeudParcoursLarg *nouveau = new noeudParcoursLarg;
         nouveau->distance = INT32_MAX; //On met la hauteur de tous les noeuds à 0
         nouveau->pere = INT32_MAX;
+        nouveau->coloration = 41;
         pl.push_back(nouveau); //On met le noeud à la suite dans le tableau
     }
 
@@ -347,6 +348,8 @@ ParcoursLargeur::ParcoursLargeur(grid &g, const vector<int> indiceDepart)
         pl.at(indiceDepart.at(j))->pere = -1;
         pl.at(indiceDepart.at(j))->couleur = 'n';
         pl.at(indiceDepart.at(j))->distance = 0;
+        pl.at(indiceDepart.at(j))->coloration += j;
+
         vector<int> file;
         file.push_back(indiceDepart.at(j));
         int u;
@@ -363,10 +366,11 @@ ParcoursLargeur::ParcoursLargeur(grid &g, const vector<int> indiceDepart)
                 {
                     pl.at(successeurs.at(i))->couleur = 'g';
 
-                    if (pl.at(successeurs.at(i))->distance >= g.distanceVoisin(successeurs.at(i), u) + pl[u]->distance)
+                    if (pl.at(successeurs.at(i))->distance > g.distanceVoisin(successeurs.at(i), u) + pl[u]->distance)
                     {
                         pl.at(successeurs.at(i))->pere = u;
                         pl.at(successeurs.at(i))->distance = g.distanceVoisin(successeurs.at(i), u) + pl[u]->distance;
+                        pl.at(successeurs.at(i))->coloration = pl.at(pl.at(successeurs.at(i))->pere)->coloration;
                     }
 
                     file.push_back(successeurs.at(i));
@@ -402,10 +406,29 @@ void ParcoursLargeur::affichage(const grid g) const
     {
         for (int j = 0; j < g.getCol(); j++) //On parcours les(g.colonnes
         {
-            std::cout << pl.at(n)->distance << "  ";
+            // std::cout << pl.at(n)->distance << "  ";
+
+            std::cout << "\033[1;" << pl.at(n)->coloration << "m"
+                      << pl.at(n)->distance << "  "
+                      << "\033[0m";
             n++;
         }
 
         std::cout << std::endl;
     }
+
+    // int i, j;
+
+    // for (i = 0; i < 11; i++)
+    // {
+    //     for (j = 0; j < 10; j++)
+    //     {
+    //         n = 10 * i + j; // Certaines valeurs de n correspondent à des couleurs
+    //         if (n > 108)
+    //             break;
+    //         std::cout << "\033[1;" << n << "m"
+    //                   << " Couleur " << n << "\033[0m";
+    //         // On récupère l'indice n de la couleur d'affichage puis on affiche n
+    //     }
+    //     std::cout << std::endl;
 }

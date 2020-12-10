@@ -26,6 +26,7 @@ public:
     char couleur;
     int pere;
     float distance;
+    int coloration;
 };
 
 class grid
@@ -123,15 +124,14 @@ public:
 
     std::vector<noeudParcoursLarg *> pl;
 
-    ParcoursLargeur(grid & g, const vector<int> indiceDepart);
+    ParcoursLargeur(grid &g, const vector<int> indiceDepart);
 
     std::vector<int> vecVoisins(const int indice, grid graphe);
 
     void affichage(const grid g) const;
     //Précondition : None
 
-    int defileMinimum(std::vector<int> & f, std::vector<noeudParcoursLarg *> pl);
-
+    int defileMinimum(std::vector<int> &f, std::vector<noeudParcoursLarg *> pl);
 };
 
 #endif
