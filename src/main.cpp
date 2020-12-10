@@ -26,12 +26,16 @@ int main(int argc, const char **argv)
     // test fonction de distance
     cout << "Distance entre (0,0) et (0,1): " << gridDeFichier.distanceVoisin(gridDeFichier.indice(0, 0), gridDeFichier.indice(0, 1)) << endl;
 
-    ParcoursLargeur parcours(gridDeFichier, 0);
+    vector<int> vecIndices;
+    vecIndices.push_back(0);
+    vecIndices.push_back(5);
+
+    ParcoursLargeur parcours(gridDeFichier, vecIndices);
     parcours.affichage(gridDeFichier);
 
     cout << "Distance entre (0,0) et (0,1): " << grid34.distanceVoisin(grid34.indice(0, 0), grid34.indice(0, 1)) << endl;
 
-    ParcoursLargeur parcours1(grid34, 0);
+    ParcoursLargeur parcours1(grid34, vecIndices);
     parcours1.affichage(grid34);
 
     return EXIT_SUCCESS;

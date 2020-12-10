@@ -123,7 +123,7 @@ public:
 
     std::vector<noeudParcoursLarg *> pl;
 
-    ParcoursLargeur(grid & g, const int indiceDepart);
+    ParcoursLargeur(grid & g, const vector<int> indiceDepart);
 
     std::vector<int> vecVoisins(const int indice, grid graphe);
 
