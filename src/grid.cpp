@@ -320,19 +320,16 @@ std::vector<int> ParcoursLargeur::vecVoisins(const int indice, grid graphe)
     if (x != -1 && x != -2)
         vec.push_back(x);
 
-    // for (unsigned int i = 0; i < vec.size(); i++)
-    //     std::cout << vec.at(i) << std::endl;
     return vec;
 }
 
 ParcoursLargeur::ParcoursLargeur(grid &g, const vector<int> indiceDepart)
 {
-    // init tableau parcours largeur
 
     for (int i = 0; i < g.getTaille(); i++)
     {
         noeudParcoursLarg *nouveau = new noeudParcoursLarg;
-        nouveau->distance = INT32_MAX; //On met la hauteur de tous les noeuds à 0
+        nouveau->distance = INT32_MAX; //On met la hauteur de tous les noeuds à MAX
         nouveau->pere = INT32_MAX;
         nouveau->coloration = 41;
         pl.push_back(nouveau); //On met le noeud à la suite dans le tableau
@@ -406,29 +403,18 @@ void ParcoursLargeur::affichage(const grid g) const
     {
         for (int j = 0; j < g.getCol(); j++) //On parcours les(g.colonnes
         {
-            // std::cout << pl.at(n)->distance << "  ";
 
-            std::cout << "\033[1;" << pl.at(n)->coloration << "m"
-                      << pl.at(n)->distance << "  "
-                      << "\033[0m";
+            if (pl.at(n)->distance != 0)
+            {
+                std::cout << "\033[1;" << pl.at(n)->coloration << "m"
+                          << pl.at(n)->distance << "  "
+                          << "\033[0m";
+            }
+            else
+                std::cout << pl.at(n)->distance << " ";
             n++;
         }
 
         std::cout << std::endl;
     }
-
-    // int i, j;
-
-    // for (i = 0; i < 11; i++)
-    // {
-    //     for (j = 0; j < 10; j++)
-    //     {
-    //         n = 10 * i + j; // Certaines valeurs de n correspondent à des couleurs
-    //         if (n > 108)
-    //             break;
-    //         std::cout << "\033[1;" << n << "m"
-    //                   << " Couleur " << n << "\033[0m";
-    //         // On récupère l'indice n de la couleur d'affichage puis on affiche n
-    //     }
-    //     std::cout << std::endl;
 }
