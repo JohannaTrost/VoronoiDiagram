@@ -7,10 +7,12 @@
 int main(int argc, const char **argv)
 {
     srand(time(NULL));
-    string filename(argv[1]);
+    string filenameGrid(argv[1]);
+    string filenameSites;
+    if(argv[2] != NULL) filenameSites = argv[2];
 
     // test constructeur avec fichier
-    grid gridDeFichier(filename);
+    grid gridDeFichier(filenameGrid);
     gridDeFichier.affichage();
     cout << endl;
 
@@ -42,18 +44,19 @@ int main(int argc, const char **argv)
     for (int x = 0; x < points; x++)
         vecIndicesGridLC.push_back(rand() % ((lignes * colonnes) - 1));
 
+/*
     vector<int> vecIndicesGridFichier;
     for (int y = 0; y < 2; y++)
         vecIndicesGridFichier.push_back(rand() % 10);
-
-    SitesLibrairies parcours(gridDeFichier, vecIndicesGridFichier);
+*/
+    SitesLibrairies parcours(gridDeFichier, filenameSites);
     parcours.affichage(gridDeFichier);
     cout << endl;
 
     cout << "Distance entre (0,0) et (0,1): " << gridLC.distanceVoisin(gridLC.indice(0, 0), gridLC.indice(0, 1)) << endl
          << endl;
 
-    SitesLibrairies parcours1(gridLC, vecIndicesGridLC);
+    SitesLibrairies parcours1(gridLC, "", vecIndicesGridLC);
     parcours1.affichage(gridLC);
 
     return EXIT_SUCCESS;

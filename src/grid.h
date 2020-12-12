@@ -125,7 +125,7 @@ public:
 
     std::vector<noeudParcoursLarg *> pl;
 
-    SitesLibrairies(grid &g, const vector<int> indiceDepart);
+    SitesLibrairies(grid &g, const string fichier="", vector<int> indiceDepart=vector<int>());
 
     std::vector<int> vecVoisins(const int indice, grid graphe);
 

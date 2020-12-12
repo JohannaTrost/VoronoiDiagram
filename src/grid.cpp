@@ -254,43 +254,6 @@ float grid::distanceVoisin(const int indiceA, const int indiceB)
     return sqrt(1 + diffAB * diffAB); // distance euclidienne
 }
 
-// SitesLibrairies::SitesLibrairies(grid &g, const int indiceDepart)
-// {
-//     // init tableau parcours largeur
-//     for (int i = 0; i < g.getTaille(); i++)
-//     {
-//         noeudParcoursLarg *nouveau = new noeudParcoursLarg;
-//         nouveau->distance = INT32_MAX; //On met la hauteur de tous les noeuds à 0
-//         nouveau->pere = INT32_MAX;
-//         nouveau->couleur = 'b';
-//         pl.push_back(nouveau); //On met le noeud à la suite dans le tableau
-//     }
-//     pl.at(indiceDepart)->pere = -1;
-//     pl.at(indiceDepart)->couleur = 'n';
-//     pl.at(indiceDepart)->distance = 0;
-//     vector<int> file;
-//     file.push_back(indiceDepart);
-//     int u;
-//     vector<int> successeurs;
-//     while (!file.empty())
-//     {
-//         u = file.front();
-
-//         successeurs = vecVoisins(u, g);
-
-//         for (unsigned int i = 0; i < successeurs.size(); i++)
-//             if (pl.at(successeurs.at(i))->couleur == 'b')
-//             {
-//                 pl.at(successeurs.at(i))->couleur = 'g';
-//                 pl.at(successeurs.at(i))->pere = u;
-//                 file.push_back(successeurs.at(i));
-//                 pl.at(successeurs.at(i))->distance = g.distanceVoisin(successeurs.at(i), u) + pl[u]->distance;
-//             }
-//         file.erase(file.begin());
-//         pl.at(u)->couleur = 'n';
-//     }
-// }
-
 SitesLibrairies::~SitesLibrairies() //destructeur
 {
     for (noeudParcoursLarg *n : pl)
@@ -323,8 +286,29 @@ std::vector<int> SitesLibrairies::vecVoisins(const int indice, grid graphe)
     return vec;
 }
 
-SitesLibrairies::SitesLibrairies(grid &g, const vector<int> indiceDepart)
+SitesLibrairies::SitesLibrairies(grid &g, const string fichier/*=""*/, vector<int> indiceDepart/*=vector<int>()*/)
 {
+    // rempli indiceDepart avec valeurs du fichier si un fichier est donné
+    if (fichier != "")
+    {
+      // ouvrir fichier
+      std::ifstream input(fichier);
+
+      if (!input)
+      {
+          std::cerr << "Ne pas pouvoir ouvrir le fichier : " << fichier << std::endl;
+      }
+      else
+      {
+          vector<int> vec((istream_iterator<int>(input)), istream_iterator<int>());
+          for (std::vector<int>::size_type i = 0; i != vec.size(); i++)
+          {
+              indiceDepart.push_back(vec[i]);
+          }
+      }
+      //Close The File
+      input.close();
+    }
 
     for (int i = 0; i < g.getTaille(); i++)
     {
