@@ -1,3 +1,10 @@
+/**
+    Interface des classes Grid, Noeud et SitesLibrairies
+    @file Grid.cpp
+    @author Emie Lafourcade, Johanna Trost
+    @version 1.0 12/12/20
+*/
+
 #ifndef _GRID
 #define _GRID
 #include <vector>
@@ -10,17 +17,17 @@
 
 using namespace std;
 
-class noeud
+class Noeud
 {
-    friend class grid;
+    friend class Grid;
 
 private:
-    int hauteur; //La hauteur du noeud
+    int hauteur; //La hauteur du Noeud
 };
 
-class noeudParcoursLarg
+class NoeudParcoursLarg
 {
-    friend class grid;
+    friend class Grid;
 
 public:
     char couleur;
@@ -30,21 +37,21 @@ public:
     int coloration;
 };
 
-class grid
+class Grid
 {
 public:
     //Constructeur-------------------------------------------------------------
-    grid(const int C, const int L);
+    Grid(const int C, const int L);
     //Paramètres : C nombre de colonnes, L nombre de lignes
 
-    //Constructeur par fichier---------------------------------------------------
-    grid(const string fichier);
+    //Constructeur par fichier-------------------------------------------------
+    Grid(const string fichier);
 
     //Constructeur par copie---------------------------------------------------
-    grid(const grid &copie);
+    Grid(const Grid &copie);
 
-    //Destructeur---------------------------------------------------------------
-    ~grid();
+    //Destructeur--------------------------------------------------------------
+    ~Grid();
 
     int getTaille() const;
 
@@ -112,30 +119,32 @@ public:
     //Résultat : revoie la distance euclidienne entre l'indice a et b en prenant en compte ses hauteurs
 
 private:
-    std::vector<noeud *> g; //Le tableau 1D de noeuds
+    std::vector<Noeud *> g; //Le tableau 1D de noeuds
     int col, line;          //Nombre de colonne et de lignes de la grille
 };
 
 class SitesLibrairies
 {
-    friend class grid;
+    friend class Grid;
 
 public:
     ~SitesLibrairies();
 
-    std::vector<noeudParcoursLarg *> pl;
+    std::vector<NoeudParcoursLarg *> pl;
 
-    SitesLibrairies(grid &g, const string fichier="", vector<int> indiceDepart=vector<int>());
+    SitesLibrairies(Grid &g, const string fichier="", vector<int> indiceDepart=vector<int>());
 
-    std::vector<int> vecVoisins(const int indice, grid graphe);
+    std::vector<int> vecVoisins(const int indice, Grid graphe);
 
-    void affichage(const grid g) const;
+    void affichage(const Grid g) const;
     //Précondition : None
 
-    int defileMinimum(std::vector<int> &f, std::vector<noeudParcoursLarg *> pl);
-
 private:
-    void coloration(grid &g, const vector<int> indiceDepart);
+    void coloration(Grid &g, const vector<int> indiceDepart);
+    //Précondition : grid g et pl comprennent bien tous indices dans indiceDepart
+    //Résultat : couleurs associées aux sites sont stocké dans membre couleur de neouds de pl
+
+    int defileMinimum(std::vector<int> &f, std::vector<NoeudParcoursLarg *> pl);
 };
 
 #endif

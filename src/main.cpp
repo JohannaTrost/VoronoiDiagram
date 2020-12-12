@@ -1,3 +1,10 @@
+/**
+    Demonstration d'utilisation de Grid et SitesLibrairies
+    @file main.cpp
+    @author Emie Lafourcade, Johanna Trost
+    @version 1.0 12/12/20
+*/
+
 #include "grid.h"
 #include <cstdio>
 #include <cstdlib>
@@ -12,7 +19,7 @@ int main(int argc, const char **argv)
     if(argv[2] != NULL) filenameSites = argv[2];
 
     // test constructeur avec fichier
-    grid gridDeFichier(filenameGrid);
+    Grid gridDeFichier(filenameGrid);
     gridDeFichier.affichage();
     cout << endl;
 
@@ -28,7 +35,7 @@ int main(int argc, const char **argv)
     // int lignes = (rand() % 10 + 3);
     int colonnes = 10;
     int lignes = 20;
-    grid gridLC(lignes, colonnes);
+    Grid gridLC(lignes, colonnes);
     for (int h = 0; h < lignes * colonnes - 1; h++)
         gridLC.modifhauteur(gridLC.ligne(h), gridLC.colonne(h), rand() % 50);
     gridLC.affichage();

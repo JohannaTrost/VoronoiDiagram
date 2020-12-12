@@ -1,10 +1,18 @@
-#include "grid.h"
+/**
+    Contient toutes les fonctions appartenant aux classes Grid et SitesLibrairies
+    nécessaires pour créer un graphe de "grille" et construire ses bibliothèques
+    @file Grid.cpp
+    @author Emie Lafourcade, Johanna Trost
+    @version 1.0 12/12/20
+*/
 
-grid::grid(const int L, const int C) //Constructeur avec paramètres
+#include "Grid.h"
+
+Grid::Grid(const int L, const int C) //Constructeur avec paramètres
 {
     for (int i = 0; i < L * C; i++) //On fait un tableau de taille L*C
     {
-        noeud *nouveau = new noeud;
+        Noeud *nouveau = new Noeud;
         nouveau->hauteur = 0; //On met la hauteur de tous les noeuds à 0
         g.push_back(nouveau); //On met le noeud à la suite dans le tableau
     }
@@ -13,20 +21,20 @@ grid::grid(const int L, const int C) //Constructeur avec paramètres
     line = L; //Le nombre de lignes de la grille est L
 }
 
-grid::grid(const grid &copie) //Constructeur par copie
+Grid::Grid(const Grid &copie) //Constructeur par copie
 {
 
     col = copie.col;
     line = copie.line;
     for (unsigned int i = 0; i < copie.g.size(); i++)
     {
-        noeud *nouveau = new noeud;
+        Noeud *nouveau = new Noeud;
         nouveau->hauteur = copie.g.at(i)->hauteur;
         g.push_back(nouveau);
     }
 }
 
-grid::grid(const string fichier) //Constructeur avec fichier
+Grid::Grid(const string fichier) //Constructeur avec fichier
 {
     // ouvrir fichier
     std::ifstream input(fichier);
@@ -42,7 +50,7 @@ grid::grid(const string fichier) //Constructeur avec fichier
         line = vec.at(1);
         for (std::vector<int>::size_type i = 2; i != vec.size(); i++)
         {
-            noeud *nouveau = new noeud;
+            Noeud *nouveau = new Noeud;
             nouveau->hauteur = vec[i];
             g.push_back(nouveau);
         }
@@ -50,29 +58,29 @@ grid::grid(const string fichier) //Constructeur avec fichier
     //Close The File
     input.close();
 }
-grid::~grid() //destructeur
+Grid::~Grid() //destructeur
 {
-    for (noeud *n : g)
+    for (Noeud *n : g)
         delete n; //On detruit chaque noeud
     g.clear();    //Puis on vide le vecteur
 }
 
-int grid::getTaille() const
+int Grid::getTaille() const
 {
     return col * line;
 }
 
-int grid::getLine() const
+int Grid::getLine() const
 {
     return line;
 }
 
-int grid::getCol() const
+int Grid::getCol() const
 {
     return col;
 }
 
-void grid::affichage()
+void Grid::affichage()
 {
     int n = 0;
     for (int i = 0; i < line; i++) //On parcours les lignes
@@ -87,7 +95,7 @@ void grid::affichage()
     }
 }
 
-void grid::modifhauteur(const int i, const int j, const int h)
+void Grid::modifhauteur(const int i, const int j, const int h)
 {
     if (i < line && j < col && i >= 0 && j >= 0) //On verifie que le noeud (i,j) existe
         g.at(indice(i, j))->hauteur = h;         //on lui met la hauteur h
@@ -95,7 +103,7 @@ void grid::modifhauteur(const int i, const int j, const int h)
         std::cout << "ce noeud n'existe pas" << std::endl;
 }
 
-int grid::indice(const int i, const int j)
+int Grid::indice(const int i, const int j)
 {
     if (i < line && j < col && i >= 0 && j >= 0) //On verifie que le noeud (i,j) existe
         return i * col + j;                      //On retourne son indice dans la tableau
@@ -106,7 +114,7 @@ int grid::indice(const int i, const int j)
     }
 }
 
-int grid::colonne(const int indice)
+int Grid::colonne(const int indice)
 {
     if ((unsigned int)indice < g.size() && indice >= 0) //On verifie que l'indice du noeud est dans le tableau
         return indice % col;                            //On retourne la(g.colonne de la grille dans laquelle le noeud est
@@ -117,7 +125,7 @@ int grid::colonne(const int indice)
     }
 }
 
-int grid::ligne(const int indice)
+int Grid::ligne(const int indice)
 {
     if ((unsigned int)indice < g.size() && indice >= 0) //On verifie que l'indice du noeud est dans le tableau
         return indice / col;                            //On retourne la ligne de la grille dans laquelle le noeud est
@@ -128,7 +136,7 @@ int grid::ligne(const int indice)
     }
 }
 
-int grid::hauteur(const int indice)
+int Grid::hauteur(const int indice)
 {
     if ((unsigned int)indice < g.size() && indice >= 0) //On verifie que l'indice du noeud est dans le tableau
         return g.at(indice)->hauteur;                   //On retourne sa hauteur
@@ -139,7 +147,7 @@ int grid::hauteur(const int indice)
     }
 }
 
-bool grid::existNord(const int i)
+bool Grid::existNord(const int i)
 {
     if (i < line && i >= 0) //On verifie que la ligne du noeud est dans la grille
         return i - 1 >= 0;  //On retourne si la ligne d'au dessus existe
@@ -150,7 +158,7 @@ bool grid::existNord(const int i)
     }
 }
 
-bool grid::existSud(const int i)
+bool Grid::existSud(const int i)
 {
     if (i < line && i >= 0)  //On verifie que la ligne du noeud est dans la grille
         return i + 1 < line; //On retourne si la ligne d'au dessous existe
@@ -162,7 +170,7 @@ bool grid::existSud(const int i)
     }
 }
 
-bool grid::existEst(const int j)
+bool Grid::existEst(const int j)
 {
     if (j < col && j >= 0)  //On verifie que la(g.colonne du noeud est dans la grille
         return j + 1 < col; //On retourne si la(g.colonne à sa droite existe
@@ -173,7 +181,7 @@ bool grid::existEst(const int j)
     }
 }
 
-bool grid::existOuest(const int j)
+bool Grid::existOuest(const int j)
 {
     if (j < col && j >= 0) //On verifie que la(g.colonne du noeud est dans la grille
         return j - 1 >= 0; //On retourne si la(g.colonne à sa gauche existe
@@ -184,7 +192,7 @@ bool grid::existOuest(const int j)
     }
 }
 
-int grid::indiceNord(const int i, const int j)
+int Grid::indiceNord(const int i, const int j)
 {
     if (i < line && j < col && i >= 0 && j >= 0) //On verifie que le noeud (i,j) existe
     {
@@ -200,7 +208,7 @@ int grid::indiceNord(const int i, const int j)
     }
 }
 
-int grid::indiceSud(const int i, const int j)
+int Grid::indiceSud(const int i, const int j)
 {
     if (i < line && j < col && i >= 0 && j >= 0) //On verifie que le noeud (i,j) existe
     {
@@ -216,7 +224,7 @@ int grid::indiceSud(const int i, const int j)
     }
 }
 
-int grid::indiceEst(const int i, const int j)
+int Grid::indiceEst(const int i, const int j)
 {
     if (i < line && j < col && i >= 0 && j >= 0) //On verifie que le noeud (i,j) existe
     {
@@ -232,7 +240,7 @@ int grid::indiceEst(const int i, const int j)
     }
 }
 
-int grid::indiceOuest(const int i, const int j)
+int Grid::indiceOuest(const int i, const int j)
 {
     if (i < line && j < col && i >= 0 && j >= 0) //On verifie que le noeud (i,j) existe
     {
@@ -248,7 +256,7 @@ int grid::indiceOuest(const int i, const int j)
     }
 }
 
-float grid::distanceVoisin(const int indiceA, const int indiceB)
+float Grid::distanceVoisin(const int indiceA, const int indiceB)
 {
     int diffAB = hauteur(indiceA) - hauteur(indiceB);
     return sqrt(1 + diffAB * diffAB); // distance euclidienne
@@ -256,12 +264,12 @@ float grid::distanceVoisin(const int indiceA, const int indiceB)
 
 SitesLibrairies::~SitesLibrairies() //destructeur
 {
-    for (noeudParcoursLarg *n : pl)
+    for (NoeudParcoursLarg *n : pl)
         delete n; //On detruit chaque noeud
     pl.clear();   //Puis on vide le vecteur
 }
 
-std::vector<int> SitesLibrairies::vecVoisins(const int indice, grid graphe)
+std::vector<int> SitesLibrairies::vecVoisins(const int indice, Grid graphe)
 {
     std::vector<int> vec;
     int i = graphe.ligne(indice);
@@ -286,7 +294,7 @@ std::vector<int> SitesLibrairies::vecVoisins(const int indice, grid graphe)
     return vec;
 }
 
-SitesLibrairies::SitesLibrairies(grid &g, const string fichier/*=""*/, vector<int> indiceDepart/*=vector<int>()*/)
+SitesLibrairies::SitesLibrairies(Grid &g, const string fichier/*=""*/, vector<int> indiceDepart/*=vector<int>()*/)
 {
     // rempli indiceDepart avec valeurs du fichier si un fichier est donné
     if (fichier != "")
@@ -310,9 +318,10 @@ SitesLibrairies::SitesLibrairies(grid &g, const string fichier/*=""*/, vector<in
       input.close();
     }
 
+    // init de table pl qui memorise les infos necessaires au parcours
     for (int i = 0; i < g.getTaille(); i++)
     {
-        noeudParcoursLarg *nouveau = new noeudParcoursLarg;
+        NoeudParcoursLarg *nouveau = new NoeudParcoursLarg;
         nouveau->distance = INT32_MAX; //On met la hauteur de tous les noeuds à MAX
         nouveau->pere = INT32_MAX;
         nouveau->coloration = 41;
@@ -320,52 +329,58 @@ SitesLibrairies::SitesLibrairies(grid &g, const string fichier/*=""*/, vector<in
         pl.push_back(nouveau); //On met le noeud à la suite dans le tableau
     }
 
+    // parcours de l'ensemble de points de départ (sites)
     for (unsigned int j = 0; j < indiceDepart.size(); j++)
     {
+        // Dijkstra
+
+        // tous sommets sont blanc au début
         for (unsigned int i = 0; i < pl.size(); i++)
         {
             pl.at(i)->couleur = 'b';
         }
 
+        // init de point de départ
         pl.at(indiceDepart.at(j))->pere = -1;
         pl.at(indiceDepart.at(j))->couleur = 'n';
         pl.at(indiceDepart.at(j))->distance = 0;
         pl.at(indiceDepart.at(j))->coloration += j;
 
-        vector<int> file;
+        vector<int> file; // file d'attente
         file.push_back(indiceDepart.at(j));
-        int u;
-        vector<int> successeurs;
+        int u; // indice du sommet traité actuellement
+        vector<int> voisins;
         while (!file.empty())
         {
             u = defileMinimum(file, pl);
 
-            successeurs = vecVoisins(u, g);
+            voisins = vecVoisins(u, g);
 
-            for (unsigned int i = 0; i < successeurs.size(); i++)
+            for (unsigned int i = 0; i < voisins.size(); i++) // parcourir tous voisins
             {
-                pl.at(u)->fils = successeurs.at(i);
-                if (pl.at(successeurs.at(i))->couleur == 'b')
+                pl.at(u)->fils = voisins.at(i);
+                if (pl.at(voisins.at(i))->couleur == 'b')
                 {
-                    pl.at(successeurs.at(i))->couleur = 'g';
+                    pl.at(voisins.at(i))->couleur = 'g'; // gris indique qu'on a déjè "consideré" ce sommet
 
-                    if (pl.at(successeurs.at(i))->distance > g.distanceVoisin(successeurs.at(i), u) + pl[u]->distance)
+                    // verifier si le voisin appartient au site
+                    if (pl.at(voisins.at(i))->distance > g.distanceVoisin(voisins.at(i), u) + pl[u]->distance)
                     {
-                        pl.at(successeurs.at(i))->pere = u;
-                        pl.at(successeurs.at(i))->distance = g.distanceVoisin(successeurs.at(i), u) + pl[u]->distance;
+                        pl.at(voisins.at(i))->pere = u;
+                        pl.at(voisins.at(i))->distance = g.distanceVoisin(voisins.at(i), u) + pl[u]->distance;
                     }
 
-                    file.push_back(successeurs.at(i));
+                    file.push_back(voisins.at(i));
                 }
             }
-            pl.at(u)->couleur = 'n';
+            pl.at(u)->couleur = 'n'; // noir indique que ce sommet était traité
         }
     }
 
-    coloration(g, indiceDepart);
+    coloration(g, indiceDepart); // indique quel sommet correspond à quelle librairie
 }
 
-void SitesLibrairies::coloration(grid &g, const vector<int> indiceDepart)
+void SitesLibrairies::coloration(Grid &g, const vector<int> indiceDepart)
 {
     vector<int> indicesSuivants;
     for (unsigned int m = 0; m < pl.size(); m++)
@@ -381,7 +396,8 @@ void SitesLibrairies::coloration(grid &g, const vector<int> indiceDepart)
     if (indicesSuivants.size() != 0)
         coloration(g, indicesSuivants);
 }
-int SitesLibrairies::defileMinimum(std::vector<int> &f, std::vector<noeudParcoursLarg *> pl)
+
+int SitesLibrairies::defileMinimum(std::vector<int> &f, std::vector<NoeudParcoursLarg *> pl)
 {
     float min = pl.at(f.at(0))->distance;
     int indice = f.at(0);
@@ -399,7 +415,7 @@ int SitesLibrairies::defileMinimum(std::vector<int> &f, std::vector<noeudParcour
     return indice;
 }
 
-void SitesLibrairies::affichage(const grid g) const
+void SitesLibrairies::affichage(const Grid g) const
 {
     int n = 0;
     for (int i = 0; i < g.getLine(); i++) //On parcours les lignes
