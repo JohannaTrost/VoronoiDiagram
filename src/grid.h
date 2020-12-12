@@ -25,7 +25,7 @@ class noeudParcoursLarg
 public:
     char couleur;
     int pere;
-    int fils;
+    std::vector<int> fils;
     float distance;
     int coloration;
 };
@@ -125,7 +125,7 @@ public:
 
     std::vector<noeudParcoursLarg *> pl;
 
-    SitesLibrairies(grid &g, const string fichier="", vector<int> indiceDepart=vector<int>());
+    SitesLibrairies(grid &g, const string fichier = "", vector<int> indiceDepart = vector<int>());
 
     std::vector<int> vecVoisins(const int indice, grid graphe);
 

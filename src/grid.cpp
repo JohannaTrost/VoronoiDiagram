@@ -286,28 +286,28 @@ std::vector<int> SitesLibrairies::vecVoisins(const int indice, grid graphe)
     return vec;
 }
 
-SitesLibrairies::SitesLibrairies(grid &g, const string fichier/*=""*/, vector<int> indiceDepart/*=vector<int>()*/)
+SitesLibrairies::SitesLibrairies(grid &g, const string fichier /*=""*/, vector<int> indiceDepart /*=vector<int>()*/)
 {
     // rempli indiceDepart avec valeurs du fichier si un fichier est donné
     if (fichier != "")
     {
-      // ouvrir fichier
-      std::ifstream input(fichier);
+        // ouvrir fichier
+        std::ifstream input(fichier);
 
-      if (!input)
-      {
-          std::cerr << "Ne pas pouvoir ouvrir le fichier : " << fichier << std::endl;
-      }
-      else
-      {
-          vector<int> vec((istream_iterator<int>(input)), istream_iterator<int>());
-          for (std::vector<int>::size_type i = 0; i != vec.size(); i++)
-          {
-              indiceDepart.push_back(vec[i]);
-          }
-      }
-      //Close The File
-      input.close();
+        if (!input)
+        {
+            std::cerr << "Ne pas pouvoir ouvrir le fichier : " << fichier << std::endl;
+        }
+        else
+        {
+            vector<int> vec((istream_iterator<int>(input)), istream_iterator<int>());
+            for (std::vector<int>::size_type i = 0; i != vec.size(); i++)
+            {
+                indiceDepart.push_back(vec[i]);
+            }
+        }
+        //Close The File
+        input.close();
     }
 
     for (int i = 0; i < g.getTaille(); i++)
@@ -316,7 +316,6 @@ SitesLibrairies::SitesLibrairies(grid &g, const string fichier/*=""*/, vector<in
         nouveau->distance = INT32_MAX; //On met la hauteur de tous les noeuds à MAX
         nouveau->pere = INT32_MAX;
         nouveau->coloration = 41;
-        nouveau->fils = -1;
         pl.push_back(nouveau); //On met le noeud à la suite dans le tableau
     }
 
@@ -344,7 +343,7 @@ SitesLibrairies::SitesLibrairies(grid &g, const string fichier/*=""*/, vector<in
 
             for (unsigned int i = 0; i < successeurs.size(); i++)
             {
-                pl.at(u)->fils = successeurs.at(i);
+                pl.at(u)->fils.push_back(successeurs.at(i));
                 if (pl.at(successeurs.at(i))->couleur == 'b')
                 {
                     pl.at(successeurs.at(i))->couleur = 'g';
@@ -374,7 +373,7 @@ void SitesLibrairies::coloration(grid &g, const vector<int> indiceDepart)
             {
                 pl.at(m)->coloration = pl.at(indiceDepart.at(n))->coloration;
 
-                if (pl.at(m)->fils != -1)
+                if (pl.at(m)->fils.size() != 0)
                     indicesSuivants.push_back(m);
             }
 
