@@ -254,7 +254,7 @@ float grid::distanceVoisin(const int indiceA, const int indiceB)
     return sqrt(1 + diffAB * diffAB); // distance euclidienne
 }
 
-// ParcoursLargeur::ParcoursLargeur(grid &g, const int indiceDepart)
+// SitesLibrairies::SitesLibrairies(grid &g, const int indiceDepart)
 // {
 //     // init tableau parcours largeur
 //     for (int i = 0; i < g.getTaille(); i++)
@@ -291,14 +291,14 @@ float grid::distanceVoisin(const int indiceA, const int indiceB)
 //     }
 // }
 
-ParcoursLargeur::~ParcoursLargeur() //destructeur
+SitesLibrairies::~SitesLibrairies() //destructeur
 {
     for (noeudParcoursLarg *n : pl)
         delete n; //On detruit chaque noeud
     pl.clear();   //Puis on vide le vecteur
 }
 
-std::vector<int> ParcoursLargeur::vecVoisins(const int indice, grid graphe)
+std::vector<int> SitesLibrairies::vecVoisins(const int indice, grid graphe)
 {
     std::vector<int> vec;
     int i = graphe.ligne(indice);
@@ -323,7 +323,7 @@ std::vector<int> ParcoursLargeur::vecVoisins(const int indice, grid graphe)
     return vec;
 }
 
-ParcoursLargeur::ParcoursLargeur(grid &g, const vector<int> indiceDepart)
+SitesLibrairies::SitesLibrairies(grid &g, const vector<int> indiceDepart)
 {
 
     for (int i = 0; i < g.getTaille(); i++)
@@ -332,6 +332,7 @@ ParcoursLargeur::ParcoursLargeur(grid &g, const vector<int> indiceDepart)
         nouveau->distance = INT32_MAX; //On met la hauteur de tous les noeuds à MAX
         nouveau->pere = INT32_MAX;
         nouveau->coloration = 41;
+        nouveau->fils = -1;
         pl.push_back(nouveau); //On met le noeud à la suite dans le tableau
     }
 
@@ -359,6 +360,7 @@ ParcoursLargeur::ParcoursLargeur(grid &g, const vector<int> indiceDepart)
 
             for (unsigned int i = 0; i < successeurs.size(); i++)
             {
+                pl.at(u)->fils = successeurs.at(i);
                 if (pl.at(successeurs.at(i))->couleur == 'b')
                 {
                     pl.at(successeurs.at(i))->couleur = 'g';
@@ -367,7 +369,6 @@ ParcoursLargeur::ParcoursLargeur(grid &g, const vector<int> indiceDepart)
                     {
                         pl.at(successeurs.at(i))->pere = u;
                         pl.at(successeurs.at(i))->distance = g.distanceVoisin(successeurs.at(i), u) + pl[u]->distance;
-                        pl.at(successeurs.at(i))->coloration = pl.at(pl.at(successeurs.at(i))->pere)->coloration;
                     }
 
                     file.push_back(successeurs.at(i));
@@ -376,9 +377,27 @@ ParcoursLargeur::ParcoursLargeur(grid &g, const vector<int> indiceDepart)
             pl.at(u)->couleur = 'n';
         }
     }
+
+    coloration(g, indiceDepart);
 }
 
-int ParcoursLargeur::defileMinimum(std::vector<int> &f, std::vector<noeudParcoursLarg *> pl)
+void SitesLibrairies::coloration(grid &g, const vector<int> indiceDepart)
+{
+    vector<int> indicesSuivants;
+    for (unsigned int m = 0; m < pl.size(); m++)
+        for (unsigned int n = 0; n < indiceDepart.size(); n++)
+            if (pl.at(m)->pere == indiceDepart.at(n))
+            {
+                pl.at(m)->coloration = pl.at(indiceDepart.at(n))->coloration;
+
+                if (pl.at(m)->fils != -1)
+                    indicesSuivants.push_back(m);
+            }
+
+    if (indicesSuivants.size() != 0)
+        coloration(g, indicesSuivants);
+}
+int SitesLibrairies::defileMinimum(std::vector<int> &f, std::vector<noeudParcoursLarg *> pl)
 {
     float min = pl.at(f.at(0))->distance;
     int indice = f.at(0);
@@ -396,7 +415,7 @@ int ParcoursLargeur::defileMinimum(std::vector<int> &f, std::vector<noeudParcour
     return indice;
 }
 
-void ParcoursLargeur::affichage(const grid g) const
+void SitesLibrairies::affichage(const grid g) const
 {
     int n = 0;
     for (int i = 0; i < g.getLine(); i++) //On parcours les lignes
@@ -407,7 +426,7 @@ void ParcoursLargeur::affichage(const grid g) const
             if (pl.at(n)->distance != 0)
             {
                 std::cout << "\033[1;" << pl.at(n)->coloration << "m"
-                          << pl.at(n)->distance << "  "
+                          << (int)pl.at(n)->distance << "  "
                           << "\033[0m";
             }
             else

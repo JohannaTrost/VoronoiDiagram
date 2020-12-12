@@ -25,6 +25,7 @@ class noeudParcoursLarg
 public:
     char couleur;
     int pere;
+    int fils;
     float distance;
     int coloration;
 };
@@ -115,16 +116,16 @@ private:
     int col, line;          //Nombre de colonne et de lignes de la grille
 };
 
-class ParcoursLargeur
+class SitesLibrairies
 {
     friend class grid;
 
 public:
-    ~ParcoursLargeur();
+    ~SitesLibrairies();
 
     std::vector<noeudParcoursLarg *> pl;
 
-    ParcoursLargeur(grid &g, const vector<int> indiceDepart);
+    SitesLibrairies(grid &g, const vector<int> indiceDepart);
 
     std::vector<int> vecVoisins(const int indice, grid graphe);
 
@@ -132,6 +133,9 @@ public:
     //Précondition : None
 
     int defileMinimum(std::vector<int> &f, std::vector<noeudParcoursLarg *> pl);
+
+private:
+    void coloration(grid &g, const vector<int> indiceDepart);
 };
 
 #endif

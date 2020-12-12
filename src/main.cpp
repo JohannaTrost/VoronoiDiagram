@@ -46,14 +46,14 @@ int main(int argc, const char **argv)
     for (int y = 0; y < 2; y++)
         vecIndicesGridFichier.push_back(rand() % 10);
 
-    ParcoursLargeur parcours(gridDeFichier, vecIndicesGridFichier);
+    SitesLibrairies parcours(gridDeFichier, vecIndicesGridFichier);
     parcours.affichage(gridDeFichier);
     cout << endl;
 
     cout << "Distance entre (0,0) et (0,1): " << gridLC.distanceVoisin(gridLC.indice(0, 0), gridLC.indice(0, 1)) << endl
          << endl;
 
-    ParcoursLargeur parcours1(gridLC, vecIndicesGridLC);
+    SitesLibrairies parcours1(gridLC, vecIndicesGridLC);
     parcours1.affichage(gridLC);
 
     return EXIT_SUCCESS;
