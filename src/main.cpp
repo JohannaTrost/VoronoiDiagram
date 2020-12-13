@@ -10,115 +10,92 @@
 #include <cstdlib>
 #include <time.h>
 #include <iostream>
-#include <boost/program_options.hpp>
-
-using namespace boost::program_options;
 
 int main(int argc, const char **argv)
 {
     srand(time(NULL));
     Grid * grid;
+    string filenameGrid = "None";
+    string filenameSites = "None";
 
     try
     {
-      options_description desc("Allowed options");
-      desc.add_options()
-          ("help,h", "produce help message")
-          ("input-file-grid,g", value<string>()->default_value(""), "Nom du ficher txt qui contient la grille"
-                                               " qui est ensuite visualisée."
-                                               " E.g. grille.txt. Si vous ne le"
-                                               " specifiez pas la grille est crée"
-                                               " de manière aléatoire")
-          ("input-file-sites,s", value<string>()->default_value(""), "Nom du ficher txt qui contient les indices"
-                                                " des sites qui sont ensuite visualisées."
-                                                " E.g. sites.txt. Si vous ne le"
-                                                " specifiez pas les sites sont choisis"
-                                                " de manière aléatoire") // bool_switch()
-          ("indices,i", value<vector<int> >()->multitoken(), "indice (ligne,colonne) e.g. (0,3) "
-                                                             "pour afficher tous les voisins du sommet (i,j)")
-      ;
-
-      variables_map vm;
-      store(parse_command_line(argc, argv, desc), vm);
-      notify(vm);
-
-      if (vm.count("help"))
+      if (argv[1] != NULL)
       {
-          cout << desc << "\n";
-          return 1;
+        filenameGrid = argv[1];
       }
 
-      if (vm.count("input-file-grid"))
-      {
-          string filenameGrid = vm["input-file-grid"].as<string>();
-          cout << "------------------------------------------------------\n"
-               << "\tLa grille \n"
-               << "------------------------------------------------------" << endl;
-          cout << "\n";
+      cout << "------------------------------------------------------\n"
+           << "\tLa grille \n"
+           << "------------------------------------------------------" << endl;
+      cout << "\n";
 
-          if(filenameGrid == "")
-          {
-            // creation d'une grille avec nb cols et lignes et modif d'hauteur
-            cout << "Grille generée de manière aléatoire: " << ":\n" << endl;
-            int colonnes = (rand() % 10 + 3);
-            int lignes = (rand() % 10 + 3);
-            grid = new Grid(lignes, colonnes);
-            for (int h = 0; h < lignes * colonnes - 1; h++)
-                grid->modifhauteur(grid->ligne(h), grid->colonne(h), rand() % 50);
-            grid->affichage();
-            cout << endl;
-          }
-          else
-          {
-            // creation de la grille à partir du fichier txt
-            cout << "Grille du fichier " << filenameGrid << ":\n" << endl;
-            grid = new Grid(filenameGrid);
-            grid->affichage();
-            cout << endl;
-          }
+      if(filenameGrid == "None" )
+      {
+        // creation d'une grille avec nb cols et lignes et modif d'hauteur
+        cout << "Grille generée de manière aléatoire: " << ":\n" << endl;
+        int colonnes = (rand() % 10 + 3);
+        int lignes = (rand() % 10 + 3);
+        grid = new Grid(lignes, colonnes);
+        for (int h = 0; h < lignes * colonnes - 1; h++)
+            grid->modifhauteur(grid->ligne(h), grid->colonne(h), rand() % 50);
+        grid->affichage();
+        cout << endl;
+      }
+      else
+      {
+        // creation de la grille à partir du fichier txt
+        cout << "Grille du fichier " << filenameGrid << ":\n" << endl;
+        grid = new Grid(filenameGrid);
+        grid->affichage();
+        cout << endl;
       }
 
-      if (vm.count("input-file-sites"))
+      if (argv[1] != NULL && argv[2] != NULL)
       {
-          string filenameSites = vm["input-file-sites"].as<string>();
-          cout << "------------------------------------------------------\n"
-               << "\tLibrairies de la grille \n"
-               << "------------------------------------------------------" << endl;
-          cout << "\n";
+        filenameSites = argv[2];
+      }
+      else
+      {
+        filenameSites = "None";
+      }
 
-          if(filenameSites == "")
-          {
-            int nbPoints = 4;
-            vector<int> indicesSites;
-            int indice;
+      cout << "------------------------------------------------------\n"
+           << "\tLibrairies de la grille \n"
+           << "------------------------------------------------------" << endl;
+      cout << "\n";
 
-            cout << "Indices des sites: " << endl;
-            for (int x = 0; x < nbPoints-1; x++)
-            {
-                indice = rand() % ((grid->getLine() * grid->getCol()) - 1);
-                cout << indice << ", ";
-                indicesSites.push_back(indice);
-            }
+      if(filenameSites == "None")
+      {
+        int nbPoints = 4;
+        vector<int> indicesSites;
+        int indice;
+
+        cout << "Indices des sites: " << endl;
+        for (int x = 0; x < nbPoints-1; x++)
+        {
             indice = rand() % ((grid->getLine() * grid->getCol()) - 1);
-            cout << indice << "\n" << endl;
+            cout << indice << ", ";
             indicesSites.push_back(indice);
+        }
+        indice = rand() % ((grid->getLine() * grid->getCol()) - 1);
+        cout << indice << "\n" << endl;
+        indicesSites.push_back(indice);
 
-            SitesLibrairies librairies(*grid, "", indicesSites);
-            librairies.affichage(*grid);
-          }
-          else
-          {
-            SitesLibrairies librairies(*grid, filenameSites);
-            librairies.affichage(*grid);
-            cout << endl;
-          }
+        SitesLibrairies librairies(*grid, "", indicesSites);
+        librairies.affichage(*grid);
+      }
+      else
+      {
+        SitesLibrairies librairies(*grid, filenameSites);
+        librairies.affichage(*grid);
+        cout << endl;
       }
 
-      if(vm.count("indices"))
+      if (argv[1] != NULL && argv[2] != NULL && argv[3] != NULL && argv[4] != NULL)
       {
-        vector<int> indices = vm["indices"].as<vector<int>>();
-        int i = indices[0];
-        int j = indices[1];
+        int i = atoi(argv[3]);
+        int j = atoi(argv[4]);
 
         cout << "\nL'hauteur à (" << i << "," << j << ") est: " << grid->hauteur(grid->indice(i, j)) << endl;
 
@@ -163,12 +140,12 @@ int main(int argc, const char **argv)
         }
       }
 
-      delete grid; 
+      delete grid;
     }
-    catch (const error &ex)
-   {
-     cerr << ex.what() << '\n';
-   }
+    catch (exception& e)
+    {
+      cerr << "exception caught: " << e.what() << '\n';
+    }
 
     return EXIT_SUCCESS;
 }

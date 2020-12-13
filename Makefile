@@ -1,7 +1,6 @@
 	CC = g++ -g
 	DEBUG = -ggdb
 	OPTIONS = -Wall
-	BOOST_OPTIONS = -lboost_program_options
 
 	SRC_grid = src/Grid.h
 
@@ -14,7 +13,7 @@
 all : bin/main
 
 bin/main :  $(OBJETS)
-	$(CC) $(DEBUG) $(OPTIONS) $(BOOST_OPTIONS) $^ -o $@
+	$(CC) $(DEBUG) $(OPTIONS) $^ -o $@
 
 obj/main.o : $(M_CPP) $(SRC_CLE) $(SRC_element_A) $(SRC_element) $(SRC_TAB) $(SRC_grid)
 	$(CC) $(DEBUG) $(OPTIONS) -o $@ -c $<
