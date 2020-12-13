@@ -36,8 +36,10 @@ int main(int argc, const char **argv)
       cout << "Grille generée de manière aléatoire: "
            << ":\n"
            << endl;
-      int colonnes = (rand() % 10 + 3);
-      int lignes = (rand() % 10 + 3);
+      int colonnes = (rand() % 8 + 5);
+      int lignes = (rand() % 8 + 5);
+      // int colonnes = 20;
+      // int lignes = 20;
       grid = new Grid(lignes, colonnes);
       for (int h = 0; h < lignes * colonnes - 1; h++)
         grid->modifhauteur(grid->ligne(h), grid->colonne(h), rand() % 50);

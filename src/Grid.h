@@ -32,7 +32,6 @@ class NoeudLibrairies
 public:
     char couleur;
     int pere;
-    vector<int> fils;
     float distance;
     int coloration;
 };

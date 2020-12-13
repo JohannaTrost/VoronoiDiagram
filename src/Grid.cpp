@@ -357,7 +357,7 @@ SitesLibrairies::SitesLibrairies(Grid &g, const string fichier /*=""*/, vector<i
 
             for (unsigned int i = 0; i < voisins.size(); i++) // parcourir tous voisins
             {
-                gridLibrairies.at(u)->fils.push_back(voisins.at(i));
+                // gridLibrairies.at(u)->fils.push_back(voisins.at(i));
                 if (gridLibrairies.at(voisins.at(i))->couleur == 'b') //Si le noeud n'a pas déjà été "considéré" (il est blanc)
                 {
                     gridLibrairies.at(voisins.at(i))->couleur = 'g'; // gris indique qu'on a déjà "consideré" ce sommet
@@ -387,9 +387,7 @@ void SitesLibrairies::coloration(Grid &g, const vector<int> indiceDepart)
             if (gridLibrairies.at(m)->pere == indiceDepart.at(n)) //Si un noeud est fils d'un de ces pères
             {
                 gridLibrairies.at(m)->coloration = gridLibrairies.at(indiceDepart.at(n))->coloration; //Le noeud prend la couleur de son père
-
-                if (gridLibrairies.at(m)->fils.size() != 0) //Si ce noeud à lui même des fils
-                    indicesSuivants.push_back(m);           //On met ce noeud dans la file
+                indicesSuivants.push_back(m);                                                         //On met ce noeud dans la file
             }
 
     if (indicesSuivants.size() != 0)    //Si on a encore des fils à colorier
