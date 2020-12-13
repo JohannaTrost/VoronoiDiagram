@@ -1,5 +1,5 @@
 /**
-    Demonstration d'utilisation de Grid et SitesLibrairies
+    Programme pou l'utilisation de Grid et SitesLibrairies
     @file main.cpp
     @author Emie Lafourcade, Johanna Trost
     @version 1.0 12/12/20
@@ -29,7 +29,7 @@ int main(int argc, const char **argv)
                                                " E.g. grille.txt. Si vous ne le"
                                                " specifiez pas la grille est crée"
                                                " de manière aléatoire")
-           ("input-file-sites,s", value<string>()->default_value(""), "Nom du ficher txt qui contient les indices"
+          ("input-file-sites,s", value<string>()->default_value(""), "Nom du ficher txt qui contient les indices"
                                                 " des sites qui sont ensuite visualisées."
                                                 " E.g. sites.txt. Si vous ne le"
                                                 " specifiez pas les sites sont choisis"
@@ -85,7 +85,7 @@ int main(int argc, const char **argv)
                << "\tLibrairies de la grille \n"
                << "------------------------------------------------------" << endl;
           cout << "\n";
-          
+
           if(filenameSites == "")
           {
             int nbPoints = 4;
@@ -162,6 +162,8 @@ int main(int argc, const char **argv)
            cout << "\tPas de sommet au sud" << endl;
         }
       }
+
+      delete grid; 
     }
     catch (const error &ex)
    {
