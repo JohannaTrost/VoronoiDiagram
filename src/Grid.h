@@ -25,14 +25,14 @@ private:
     int hauteur; //La hauteur du Noeud
 };
 
-class NoeudParcoursLarg
+class NoeudLibrairies
 {
     friend class Grid;
 
 public:
     char couleur;
     int pere;
-    int fils;
+    vector<int> fils;
     float distance;
     int coloration;
 };
@@ -46,6 +46,7 @@ public:
 
     //Constructeur par fichier-------------------------------------------------
     Grid(const string fichier);
+    //Paramètres : fichier string de nom du fichier txt avec la grille
 
     //Constructeur par copie---------------------------------------------------
     Grid(const Grid &copie);
@@ -111,6 +112,10 @@ public:
     //Précondition : i et j compris dans la grille et le noeud (i,j) a un voisin Ouest
     //Résultat : renvoie l'indice de la case du tableau où est contenu le voisin Ouest du noeud (i,j), -1 si le noeud n'existe pas, -2 si il n'a pas de voisin
 
+    Grid & operator = (const Grid & grid);
+    //Précondition : None
+    //Résultat : copie de grid
+
     void affichage();
     //Précondition : None
 
@@ -128,23 +133,32 @@ class SitesLibrairies
     friend class Grid;
 
 public:
+    //Constructeur----------------------------------------------------------------------------
+    SitesLibrairies(Grid &g, const string fichier="", vector<int> indiceDepart=vector<int>());
+    //Paramètres : g grille, fichier nom du fichier txt avec les indices des sites "" par défaut,
+    //             indiceDepart avec indices des sites par defaut vecteur vide
+
+    //Destructeur-----------------------------------------------------------------------------
     ~SitesLibrairies();
 
-    std::vector<NoeudParcoursLarg *> pl;
-
-    SitesLibrairies(Grid &g, const string fichier="", vector<int> indiceDepart=vector<int>());
-
-    std::vector<int> vecVoisins(const int indice, Grid graphe);
+    vector<int> vecVoisins(const int indice, Grid graphe);
+    //Précondition : indice appartient à la grille
+    //Résultat : vecteur qui contient les indice au nord, sud, est et ouest de l'indice en entrée
 
     void affichage(const Grid g) const;
     //Précondition : None
 
 private:
-    void coloration(Grid &g, const vector<int> indiceDepart);
-    //Précondition : grid g et pl comprennent bien tous indices dans indiceDepart
-    //Résultat : couleurs associées aux sites sont stocké dans membre couleur de neouds de pl
 
-    int defileMinimum(std::vector<int> &f, std::vector<NoeudParcoursLarg *> pl);
+    vector<NoeudLibrairies *> gridLibrairies; //Le tableau 1D de noeuds
+
+    void coloration(Grid &g, const vector<int> indiceDepart);
+    //Précondition : grid g et gridLibrairies comprennent bien tous indices dans indiceDepart
+    //Résultat : couleurs associées aux sites sont stocké dans membre couleur de neouds de gridLibrairies
+
+    int defileMinimum(std::vector<int> &f, std::vector<NoeudLibrairies *> gridLibrairies);
+    // Précondition : f n'est pas vide
+    // Résultat : trouve, defile et retourne la distance min. des noeuds avec les indices dans la file f
 };
 
 #endif

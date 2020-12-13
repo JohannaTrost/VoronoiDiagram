@@ -5,66 +5,168 @@
     @version 1.0 12/12/20
 */
 
-#include "grid.h"
+#include "Grid.h"
 #include <cstdio>
 #include <cstdlib>
 #include <time.h>
 #include <iostream>
+#include <boost/program_options.hpp>
+
+using namespace boost::program_options;
 
 int main(int argc, const char **argv)
 {
     srand(time(NULL));
-    string filenameGrid(argv[1]);
-    string filenameSites;
-    if(argv[2] != NULL) filenameSites = argv[2];
+    Grid * grid;
 
-    // test constructeur avec fichier
-    Grid gridDeFichier(filenameGrid);
-    gridDeFichier.affichage();
-    cout << endl;
+    try
+    {
+      options_description desc("Allowed options");
+      desc.add_options()
+          ("help,h", "produce help message")
+          ("input-file-grid,g", value<string>()->default_value(""), "Nom du ficher txt qui contient la grille"
+                                               " qui est ensuite visualisée."
+                                               " E.g. grille.txt. Si vous ne le"
+                                               " specifiez pas la grille est crée"
+                                               " de manière aléatoire")
+           ("input-file-sites,s", value<string>()->default_value(""), "Nom du ficher txt qui contient les indices"
+                                                " des sites qui sont ensuite visualisées."
+                                                " E.g. sites.txt. Si vous ne le"
+                                                " specifiez pas les sites sont choisis"
+                                                " de manière aléatoire") // bool_switch()
+          ("indices,i", value<vector<int> >()->multitoken(), "indice (ligne,colonne) e.g. (0,3) "
+                                                             "pour afficher tous les voisins du sommet (i,j)")
+      ;
 
-    // test index nord
-    cout << "nord de " << gridDeFichier.hauteur(gridDeFichier.indice(2, 3)) << ": " << gridDeFichier.hauteur(gridDeFichier.indiceNord(2, 3)) << endl;
-    // verifier s'il y a une valeur à l'est de (2,3)
-    if (!gridDeFichier.existEst(3))
-        cout << "Rien à l'est de " << gridDeFichier.hauteur(gridDeFichier.indice(2, 3)) << endl
-             << endl;
+      variables_map vm;
+      store(parse_command_line(argc, argv, desc), vm);
+      notify(vm);
 
-    // test constructeur avec nb cols et lignes et modif d'hauteur
-    // int colonnes = (rand() % 10 + 3);
-    // int lignes = (rand() % 10 + 3);
-    int colonnes = 10;
-    int lignes = 20;
-    Grid gridLC(lignes, colonnes);
-    for (int h = 0; h < lignes * colonnes - 1; h++)
-        gridLC.modifhauteur(gridLC.ligne(h), gridLC.colonne(h), rand() % 50);
-    gridLC.affichage();
-    cout << endl;
+      if (vm.count("help"))
+      {
+          cout << desc << "\n";
+          return 1;
+      }
 
-    // test fonction de distance
-    cout << "Distance entre (0,0) et (0,1): " << gridDeFichier.distanceVoisin(gridDeFichier.indice(0, 0), gridDeFichier.indice(0, 1)) << endl
-         << endl;
-    ;
+      if (vm.count("input-file-grid"))
+      {
+          string filenameGrid = vm["input-file-grid"].as<string>();
+          cout << "------------------------------------------------------\n"
+               << "\tLa grille \n"
+               << "------------------------------------------------------" << endl;
+          cout << "\n";
 
-    vector<int> vecIndicesGridLC;
-    int points = 4;
-    for (int x = 0; x < points; x++)
-        vecIndicesGridLC.push_back(rand() % ((lignes * colonnes) - 1));
+          if(filenameGrid == "")
+          {
+            // creation d'une grille avec nb cols et lignes et modif d'hauteur
+            cout << "Grille generée de manière aléatoire: " << ":\n" << endl;
+            int colonnes = (rand() % 10 + 3);
+            int lignes = (rand() % 10 + 3);
+            grid = new Grid(lignes, colonnes);
+            for (int h = 0; h < lignes * colonnes - 1; h++)
+                grid->modifhauteur(grid->ligne(h), grid->colonne(h), rand() % 50);
+            grid->affichage();
+            cout << endl;
+          }
+          else
+          {
+            // creation de la grille à partir du fichier txt
+            cout << "Grille du fichier " << filenameGrid << ":\n" << endl;
+            grid = new Grid(filenameGrid);
+            grid->affichage();
+            cout << endl;
+          }
+      }
 
-/*
-    vector<int> vecIndicesGridFichier;
-    for (int y = 0; y < 2; y++)
-        vecIndicesGridFichier.push_back(rand() % 10);
-*/
-    SitesLibrairies parcours(gridDeFichier, filenameSites);
-    parcours.affichage(gridDeFichier);
-    cout << endl;
+      if (vm.count("input-file-sites"))
+      {
+          string filenameSites = vm["input-file-sites"].as<string>();
+          cout << "------------------------------------------------------\n"
+               << "\tLibrairies de la grille \n"
+               << "------------------------------------------------------" << endl;
+          cout << "\n";
+          
+          if(filenameSites == "")
+          {
+            int nbPoints = 4;
+            vector<int> indicesSites;
+            int indice;
 
-    cout << "Distance entre (0,0) et (0,1): " << gridLC.distanceVoisin(gridLC.indice(0, 0), gridLC.indice(0, 1)) << endl
-         << endl;
+            cout << "Indices des sites: " << endl;
+            for (int x = 0; x < nbPoints-1; x++)
+            {
+                indice = rand() % ((grid->getLine() * grid->getCol()) - 1);
+                cout << indice << ", ";
+                indicesSites.push_back(indice);
+            }
+            indice = rand() % ((grid->getLine() * grid->getCol()) - 1);
+            cout << indice << "\n" << endl;
+            indicesSites.push_back(indice);
 
-    SitesLibrairies parcours1(gridLC, "", vecIndicesGridLC);
-    parcours1.affichage(gridLC);
+            SitesLibrairies librairies(*grid, "", indicesSites);
+            librairies.affichage(*grid);
+          }
+          else
+          {
+            SitesLibrairies librairies(*grid, filenameSites);
+            librairies.affichage(*grid);
+            cout << endl;
+          }
+      }
+
+      if(vm.count("indices"))
+      {
+        vector<int> indices = vm["indices"].as<vector<int>>();
+        int i = indices[0];
+        int j = indices[1];
+
+        cout << "\nL'hauteur à (" << i << "," << j << ") est: " << grid->hauteur(grid->indice(i, j)) << endl;
+
+        int index = grid->indiceOuest(i, j);
+        if (index != -1 && index != -2)
+        {
+            cout << "\t L'hauteur à l'ouest est: " << grid->hauteur(index) << endl;
+        }
+        else
+        {
+           cout << "\tPas de sommet à l'ouest" << endl;
+        }
+
+        index = grid->indiceNord(i, j);
+        if (index != -1 && index != -2)
+        {
+            cout << "\t L'hauteur au nord est: " << grid->hauteur(index) << endl;
+        }
+        else
+        {
+           cout << "\tPas de sommet au nord" << endl;
+        }
+
+        index = grid->indiceEst(i, j);
+        if (index != -1 && index != -2)
+        {
+            cout << "\t L'hauteur à l'est est: " << grid->hauteur(index) << endl;
+        }
+        else
+        {
+           cout << "\tPas de sommet à l'est" << endl;
+        }
+
+        index = grid->indiceSud(i, j);
+        if (index != -1 && index != -2)
+        {
+            cout << "\t L'hauteur au sud est: " << grid->hauteur(index) << endl;
+        }
+        else
+        {
+           cout << "\tPas de sommet au sud" << endl;
+        }
+      }
+    }
+    catch (const error &ex)
+   {
+     cerr << ex.what() << '\n';
+   }
 
     return EXIT_SUCCESS;
 }
