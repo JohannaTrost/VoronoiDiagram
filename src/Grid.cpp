@@ -324,7 +324,7 @@ SitesLibrairies::SitesLibrairies(Grid &g, const string fichier /*=""*/, vector<i
         NoeudLibrairies *nouveau = new NoeudLibrairies;
         nouveau->distance = INT32_MAX;     //On met la distance de tous les noeuds à MAX
         nouveau->pere = INT32_MAX;         //On met les pères de tous les noeuds à MAX
-        nouveau->coloration = 41;          //On met tous les noeuds à rouge (Couleur à la valeur minimum)
+        nouveau->coloration = 31;          //On met tous les noeuds à rouge (Couleur à la valeur minimum)
         gridLibrairies.push_back(nouveau); //On met le noeud à la suite dans le tableau
     }
 
@@ -409,7 +409,8 @@ int SitesLibrairies::defileMinimum(vector<int> &f, vector<NoeudLibrairies *> gri
         }
     }
     f.erase(f.begin() + indiceFile); //On enleve le noeud minimum de la file puisqu'on va le traiter
-    return indice;                   //On renvoe l'indice du noeud qui a la distance à la racine minimale
+    f.shrink_to_fit();
+    return indice; //On renvoe l'indice du noeud qui a la distance à la racine minimale
 }
 
 void SitesLibrairies::affichage(const Grid g) const
@@ -426,8 +427,11 @@ void SitesLibrairies::affichage(const Grid g) const
                      << (int)gridLibrairies.at(n)->distance << "  "
                      << "\033[0m";
             }
-            else
-                cout << gridLibrairies.at(n)->distance << " "; //Si c'est un noeud racine on l'affiche en noir
+            else //Si c'est un noeud racine on le surligne
+                cout << "\033[1;" << gridLibrairies.at(n)->coloration + 10 << "m"
+                     << " " << (int)gridLibrairies.at(n)->distance << " "
+                     << "\033[0m"
+                     << " ";
             n++;
         }
 

@@ -41,8 +41,8 @@ int main(int argc, const char **argv)
       // int colonnes = 20;
       // int lignes = 20;
       grid = new Grid(lignes, colonnes);
-      for (int h = 0; h < lignes * colonnes - 1; h++)
-        grid->modifhauteur(grid->ligne(h), grid->colonne(h), rand() % 50);
+      for (int h = 0; h < lignes * colonnes; h++)
+        grid->modifhauteur(grid->ligne(h), grid->colonne(h), rand() % 80 + 10);
       grid->affichage();
       cout << endl;
     }

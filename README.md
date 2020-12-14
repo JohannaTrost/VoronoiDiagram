@@ -1,7 +1,7 @@
 # Lifap6 – Graphe d’un terrain et diagramme de Voronoï
 
 Ce programme orienté objet met en œuvre un graphe sous forme de grille. Cela permet de modéliser une carte géographique, dont les coordonnées sont les sommets du graphe.
-En outre, le graphe est utilisé pour calculer son diagramme de Voronoï en utilisant l'algorithme de Dijkstra. Ce diagramme est une décomposition de l'espace en régions(librairies). Ceux-ci sont déterminés par un ensemble donné de coordonnées, appelés ici sites. Chaque librairie est déterminée par exactement un site et comprend tous les coordonnées qui sont plus proches du site de la librairie que de tout autre site par rapport à la métrique euclidienne.
+En outre, le graphe est utilisé pour calculer son diagramme de Voronoï en utilisant l'algorithme de Dijkstra. Ce diagramme est une décomposition de l'espace en régions(librairies). Celles-ci sont déterminées par un ensemble donné de coordonnées, appelés ici sites. Chaque librairie est déterminée par exactement un site et comprend toutes les coordonnées qui sont plus proches du site de la librairie que de tout autre site par rapport à la métrique euclidienne.
 
 ## Installation
 
@@ -26,7 +26,7 @@ Vous pouvez exécuter le programme avec au plus 4 et au moins 0 arguments [argv]
 ###### `argv[1] <string>` - la grille
 exemple : `</chemin/vers/> ./bin/main magrille.txt `  
 
-Le fichier d'entrée spécifient votre graphe de grille. Si vous ne voulez pas utiliser cet argument, votre grille sera générée de manière aléatoire. Dans ce cas, vous devez mettre `None` au lieu du nom du fichier, à moins que vous ne donniez d'autres arguments.  \
+Le fichier d'entré spécifient votre graphe de grille. Si vous ne voulez pas utiliser cet argument, votre grille sera générée de manière aléatoire. Dans ce cas, vous devez mettre `None` au lieu du nom du fichier, à moins que vous ne donniez d'autres arguments.  \
 Sinon le fichier doit avoir un format spécifique pour que le programme fonctionne correctement. La première ligne du fichier correspond au nombre de colonnes et nombre de lignes de la grille qui suit. Ensuite, les chiffres dans la grille sont les "hauteurs" de chaque sommet du graphe.
 L'exemple suivant montre un fichier txt en format correct : <br>
 
@@ -41,7 +41,7 @@ L'exemple suivant montre un fichier txt en format correct : <br>
 
 exemple : `</chemin/vers/> ./bin/main [argv1] messites.txt `
 
-Le fichier d'entrée spécifient les indices des sites dans le diagramme de Voronoï. Si vous ne voulez pas utiliser cet argument, 4 sites seront choisis au hasard. Dans ce cas, vous devez mettre `None` au lieu du nom du fichier, à moins que vous ne donniez d'autres arguments après cet argument.  \
+Le fichier d'entré spécifie les indices des sites dans le diagramme de Voronoï. Si vous ne voulez pas utiliser cet argument, 4 sites seront choisis au hasard. Dans ce cas, vous devez mettre `None` au lieu du nom du fichier, à moins que vous ne donniez d'autres arguments après cet argument.  \
 Voici un example du fichier txt (il est possible d'utiliser plusieurs lignes) : <br>
 ` 1 3 2 8`
 
@@ -90,9 +90,9 @@ Grille du fichier grille.txt:
 33  32  47  0
 <span style="color:blue">some *blue* text</span>.
 
-L'hauteur à (2,3) est: 44
-	 L'hauteur à l'ouest est: 25
-	 L'hauteur au nord est: 14
+	La hauteur à (2,3) est: 44
+	La hauteur à l'ouest est: 25
+	La hauteur au nord est: 14
 	Pas de sommet à l'est
-	 L'hauteur au sud est: 2
+	La hauteur au sud est: 2
 ```
