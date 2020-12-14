@@ -44,7 +44,7 @@ public:
     //Paramètres : C nombre de colonnes, L nombre de lignes
 
     //Constructeur par fichier-------------------------------------------------
-    Grid(const string fichier);
+    Grid(string fichier);
     //Paramètres : fichier string de nom du fichier txt avec la grille
 
     //Constructeur par copie---------------------------------------------------
@@ -129,7 +129,7 @@ class SitesLibrairies
 
 public:
     //Constructeur----------------------------------------------------------------------------
-    SitesLibrairies(Grid &g, const string fichier = "", vector<int> indiceDepart = vector<int>());
+    SitesLibrairies(Grid &g, string fichier = "", vector<int> indiceDepart = vector<int>());
     //Paramètres : g grille, fichier nom du fichier txt avec les indices des sites "" par défaut,
     //             indiceDepart avec indices des sites par defaut vecteur vide
 
