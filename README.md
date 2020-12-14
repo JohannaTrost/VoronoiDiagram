@@ -53,11 +53,11 @@ Ces arguments spécifient une certaine ligne et une certaine colonne dans votre 
 
 ## Exemples d'exécution du programme
 
-```./bin/main``` \
-```./bin/main grille.txt sites.txt``` \
-```./bin/main None None 1 2``` \
-```./bin/main grille.txt None 0 0``` \
-```./bin/main grille.txt sites.txt 2 3``` \
+```./bin/main``` <br>
+```./bin/main grille.txt sites.txt```
+```./bin/main None None 1 2```
+```./bin/main grille.txt None 0 0```
+```./bin/main grille.txt sites.txt 2 3```
 ```./bin/main None sites.txt```
 
 
@@ -88,7 +88,7 @@ Grille du fichier grille.txt:
 0 13  32  48  
 47  24  42  6  
 33  32  47  0
-
+<span style="color:blue">some *blue* text</span>.
 
 L'hauteur à (2,3) est: 44
 	 L'hauteur à l'ouest est: 25
