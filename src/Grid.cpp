@@ -29,7 +29,7 @@ Grid::Grid(const Grid &copie) //Constructeur par copie
     for (unsigned int i = 0; i < copie.g.size(); i++)
     {
         Noeud *nouveau = new Noeud;
-        nouveau->hauteur = copie.g.at(i)->hauteur;
+        nouveau->hauteur = copie.g[i]->hauteur;
         g.push_back(nouveau);
     }
 }
@@ -46,8 +46,8 @@ Grid::Grid(const string fichier) //Constructeur avec fichier
     else
     {
         vector<int> vec((istream_iterator<int>(input)), istream_iterator<int>());
-        col = vec.at(0);
-        line = vec.at(1);
+        col = vec[0];
+        line = vec[1];
         for (vector<int>::size_type i = 2; i != vec.size(); i++)
         {
             Noeud *nouveau = new Noeud;
@@ -87,7 +87,7 @@ void Grid::affichage()
     {
         for (int j = 0; j < col; j++) //On parcours les(g.colonnes
         {
-            cout << g.at(n)->hauteur << "  ";
+            cout << g[n]->hauteur << "  ";
             n++;
         }
 
@@ -98,7 +98,7 @@ void Grid::affichage()
 void Grid::modifhauteur(const int i, const int j, const int h)
 {
     if (i < line && j < col && i >= 0 && j >= 0) //On verifie que le noeud (i,j) existe
-        g.at(indice(i, j))->hauteur = h;         //on lui met la hauteur h
+        g[indice(i, j)]->hauteur = h;            //on lui met la hauteur h
     else
         cout << "ce noeud n'existe pas" << endl;
 }
@@ -139,7 +139,7 @@ int Grid::ligne(const int indice)
 int Grid::hauteur(const int indice)
 {
     if ((unsigned int)indice < g.size() && indice >= 0) //On verifie que l'indice du noeud est dans le tableau
-        return g.at(indice)->hauteur;                   //On retourne sa hauteur
+        return g[indice]->hauteur;                      //On retourne sa hauteur
     else
     {
         cout << "ce noeud n'existe pas" << endl;
@@ -336,16 +336,16 @@ SitesLibrairies::SitesLibrairies(Grid &g, const string fichier /*=""*/, vector<i
         // tous les sommets sont blancs au début de chaque parcours
         for (unsigned int i = 0; i < gridLibrairies.size(); i++)
         {
-            gridLibrairies.at(i)->couleur = 'b';
+            gridLibrairies[i]->couleur = 'b';
         }
         // init de point de départ
-        gridLibrairies.at(indiceDepart.at(j))->pere = -1;
-        gridLibrairies.at(indiceDepart.at(j))->couleur = 'n';
-        gridLibrairies.at(indiceDepart.at(j))->distance = 0;
-        gridLibrairies.at(indiceDepart.at(j))->coloration += j;
+        gridLibrairies[indiceDepart[j]]->pere = -1;
+        gridLibrairies[indiceDepart[j]]->couleur = 'n';
+        gridLibrairies[indiceDepart[j]]->distance = 0;
+        gridLibrairies[indiceDepart[j]]->coloration += j;
 
         vector<int> file; // file d'attente
-        file.push_back(indiceDepart.at(j));
+        file.push_back(indiceDepart[j]);
         int u; // indice du sommet traité actuellement
         vector<int> voisins;
         while (!file.empty())
@@ -372,7 +372,7 @@ SitesLibrairies::SitesLibrairies(Grid &g, const string fichier /*=""*/, vector<i
                     file.push_back(v); //On enfile les voisins de u pour les traiter ensuite
                 }
             }
-            gridLibrairies.at(u)->couleur = 'n'; // noir indique que ce sommet était traité
+            gridLibrairies[u]->couleur = 'n'; // noir indique que ce sommet était traité
         }
     }
 
@@ -382,12 +382,12 @@ SitesLibrairies::SitesLibrairies(Grid &g, const string fichier /*=""*/, vector<i
 void SitesLibrairies::coloration(Grid &g, const vector<int> indiceDepart)
 {
     vector<int> indicesSuivants;
-    for (unsigned int m = 0; m < gridLibrairies.size(); m++)      //On parcourt tous les noeuds
-        for (unsigned int n = 0; n < indiceDepart.size(); n++)    //On parcourt les pères
-            if (gridLibrairies.at(m)->pere == indiceDepart.at(n)) //Si un noeud est fils d'un de ces pères
+    for (unsigned int m = 0; m < gridLibrairies.size(); m++)   //On parcourt tous les noeuds
+        for (unsigned int n = 0; n < indiceDepart.size(); n++) //On parcourt les pères
+            if (gridLibrairies[m]->pere == indiceDepart[n])    //Si un noeud est fils d'un de ces pères
             {
-                gridLibrairies.at(m)->coloration = gridLibrairies.at(indiceDepart.at(n))->coloration; //Le noeud prend la couleur de son père
-                indicesSuivants.push_back(m);                                                         //On met ce noeud dans la file
+                gridLibrairies[m]->coloration = gridLibrairies[indiceDepart[n]]->coloration; //Le noeud prend la couleur de son père
+                indicesSuivants.push_back(m);                                                //On met ce noeud dans la file
             }
 
     if (indicesSuivants.size() != 0)    //Si on a encore des fils à colorier
@@ -396,15 +396,17 @@ void SitesLibrairies::coloration(Grid &g, const vector<int> indiceDepart)
 
 int SitesLibrairies::defileMinimum(vector<int> &f, vector<NoeudLibrairies *> gridLibrairies)
 {
-    float min = gridLibrairies.at(f.at(0))->distance; //On prend la distance du premier noeud comme distance minimale de départ
-    int indice = f.at(0);
+    float min = gridLibrairies[f[0]]->distance; //On prend la distance du premier noeud comme distance minimale de départ
+    int indice = f[0];
     int indiceFile = 0;
+    float x;
     for (unsigned int i = 1; i < f.size(); i++) //On parcourt tous les noeuds
     {
-        if (min > gridLibrairies.at(f.at(i))->distance) //Si la distance d'un noeud au noeud racine est plus petite que la valeur minimale
+        x = gridLibrairies[f[i]]->distance;
+        if (min > x) //Si la distance d'un noeud au noeud racine est plus petite que la valeur minimale
         {
-            min = gridLibrairies.at(f.at(i))->distance; //Ce noeud devient le minimum
-            indice = f.at(i);
+            min = x; //Ce noeud devient le minimum
+            indice = f[i];
             indiceFile = i;
         }
     }
@@ -420,18 +422,21 @@ void SitesLibrairies::affichage(const Grid g) const
     {
         for (int j = 0; j < g.getCol(); j++) //On parcours les colonnes
         {
+            int couleur = gridLibrairies[n]->coloration;
+            int distance = gridLibrairies[n]->distance;
 
-            if (gridLibrairies.at(n)->distance != 0) //Si ce n'est pas un noeud racine on l'affiche de sa couleur
+            if (gridLibrairies[n]->distance != 0) //Si ce n'est pas un noeud racine on l'affiche de sa couleur
             {
-                cout << "\033[1;" << gridLibrairies.at(n)->coloration << "m"
-                     << (int)gridLibrairies.at(n)->distance << "  "
+                cout << "\033[1;" << couleur << "m"
+                     << distance << "  "
                      << "\033[0m";
             }
             else //Si c'est un noeud racine on le surligne
-                cout << "\033[1;" << gridLibrairies.at(n)->coloration + 10 << "m"
-                     << " " << (int)gridLibrairies.at(n)->distance << " "
-                     << "\033[0m"
-                     << " ";
+                cout
+                    << "\033[1;" << couleur + 10 << "m"
+                    << " " << distance << " "
+                    << "\033[0m"
+                    << " ";
             n++;
         }
 
