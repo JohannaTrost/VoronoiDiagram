@@ -55,10 +55,6 @@ int main(int argc, const char **argv)
       {
         filenameSites = argv[2];
       }
-      else
-      {
-        filenameSites = "None";
-      }
 
       cout << "------------------------------------------------------\n"
            << "\tLibrairies de la grille \n"
