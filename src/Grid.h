@@ -32,7 +32,6 @@ class NoeudLibrairies
 public:
     char couleur;
     int pere;
-    vector<int> fils;
     float distance;
     int coloration;
 };
@@ -112,10 +111,6 @@ public:
     //Précondition : i et j compris dans la grille et le noeud (i,j) a un voisin Ouest
     //Résultat : renvoie l'indice de la case du tableau où est contenu le voisin Ouest du noeud (i,j), -1 si le noeud n'existe pas, -2 si il n'a pas de voisin
 
-    Grid & operator = (const Grid & grid);
-    //Précondition : None
-    //Résultat : copie de grid
-
     void affichage();
     //Précondition : None
 
@@ -134,7 +129,7 @@ class SitesLibrairies
 
 public:
     //Constructeur----------------------------------------------------------------------------
-    SitesLibrairies(Grid &g, const string fichier="", vector<int> indiceDepart=vector<int>());
+    SitesLibrairies(Grid &g, const string fichier = "", vector<int> indiceDepart = vector<int>());
     //Paramètres : g grille, fichier nom du fichier txt avec les indices des sites "" par défaut,
     //             indiceDepart avec indices des sites par defaut vecteur vide
 
@@ -149,12 +144,11 @@ public:
     //Précondition : None
 
 private:
-
     vector<NoeudLibrairies *> gridLibrairies; //Le tableau 1D de noeuds
 
     void coloration(Grid &g, const vector<int> indiceDepart);
     //Précondition : grid g et gridLibrairies comprennent bien tous indices dans indiceDepart
-    //Résultat : couleurs associées aux sites sont stocké dans membre couleur de neouds de gridLibrairies
+    //Résultat : couleurs associées aux sites sont stocké dans membre coloration de neouds de gridLibrairies
 
     int defileMinimum(std::vector<int> &f, std::vector<NoeudLibrairies *> gridLibrairies);
     // Précondition : f n'est pas vide

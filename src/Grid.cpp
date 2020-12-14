@@ -80,12 +80,6 @@ int Grid::getCol() const
     return col;
 }
 
-Grid & Grid::operator = (const Grid & grid)
-{
-    Grid gridCopie (grid);
-    return gridCopie;
-}
-
 void Grid::affichage()
 {
     int n = 0;
@@ -271,8 +265,8 @@ float Grid::distanceVoisin(const int indiceA, const int indiceB)
 SitesLibrairies::~SitesLibrairies() //destructeur
 {
     for (NoeudLibrairies *n : gridLibrairies)
-        delete n; //On detruit chaque noeud
-    gridLibrairies.clear();   //Puis on vide le vecteur
+        delete n;           //On detruit chaque noeud
+    gridLibrairies.clear(); //Puis on vide le vecteur
 }
 
 vector<int> SitesLibrairies::vecVoisins(const int indice, Grid graphe)
@@ -281,26 +275,26 @@ vector<int> SitesLibrairies::vecVoisins(const int indice, Grid graphe)
     int i = graphe.ligne(indice);
     int j = graphe.colonne(indice);
 
-    int x = graphe.indiceOuest(i, j);
-    if (x != -1 && x != -2)
+    int x = graphe.indiceOuest(i, j); //On récupère l'indice du fils Ouest
+    if (x != -1 && x != -2)           //Si il existe bien on le met dans le vecteur
         vec.push_back(x);
 
-    x = graphe.indiceNord(i, j);
-    if (x != -1 && x != -2)
+    x = graphe.indiceNord(i, j); //On récupère l'indice du fils Nord
+    if (x != -1 && x != -2)      //Si il existe bien on le met dans le vecteur
         vec.push_back(x);
 
-    x = graphe.indiceEst(i, j);
-    if (x != -1 && x != -2)
+    x = graphe.indiceEst(i, j); //On récupère l'indice du fils Est
+    if (x != -1 && x != -2)     //Si il existe bien on le met dans le vecteur
         vec.push_back(x);
 
-    x = graphe.indiceSud(i, j);
-    if (x != -1 && x != -2)
+    x = graphe.indiceSud(i, j); //On récupère l'indice du fils Sud
+    if (x != -1 && x != -2)     //Si il existe bien on le met dans le vecteur
         vec.push_back(x);
 
     return vec;
 }
 
-SitesLibrairies::SitesLibrairies(Grid &g, const string fichier/*=""*/, vector<int> indiceDepart/*=vector<int>()*/)
+SitesLibrairies::SitesLibrairies(Grid &g, const string fichier /*=""*/, vector<int> indiceDepart /*=vector<int>()*/)
 {
     // remgridLibrairiesi indiceDepart avec valeurs du fichier si un fichier est donné
     if (fichier != "")
@@ -310,7 +304,7 @@ SitesLibrairies::SitesLibrairies(Grid &g, const string fichier/*=""*/, vector<in
 
         if (!input)
         {
-            cerr << "Ne pas pouvoir ouvrir le fichier : " << fichier << endl;
+            cerr << "Echec ouverture fichier : " << fichier << endl;
         }
         else
         {
@@ -328,9 +322,9 @@ SitesLibrairies::SitesLibrairies(Grid &g, const string fichier/*=""*/, vector<in
     for (int i = 0; i < g.getTaille(); i++)
     {
         NoeudLibrairies *nouveau = new NoeudLibrairies;
-        nouveau->distance = INT32_MAX; //On met la hauteur de tous les noeuds à MAX
-        nouveau->pere = INT32_MAX;
-        nouveau->coloration = 41;
+        nouveau->distance = INT32_MAX;     //On met la distance de tous les noeuds à MAX
+        nouveau->pere = INT32_MAX;         //On met les pères de tous les noeuds à MAX
+        nouveau->coloration = 41;          //On met tous les noeuds à rouge (Couleur à la valeur minimum)
         gridLibrairies.push_back(nouveau); //On met le noeud à la suite dans le tableau
     }
 
@@ -339,7 +333,7 @@ SitesLibrairies::SitesLibrairies(Grid &g, const string fichier/*=""*/, vector<in
     {
         // Dijkstra
 
-        // tous sommets sont blanc au début
+        // tous les sommets sont blancs au début de chaque parcours
         for (unsigned int i = 0; i < gridLibrairies.size(); i++)
         {
             gridLibrairies.at(i)->couleur = 'b';
@@ -357,25 +351,25 @@ SitesLibrairies::SitesLibrairies(Grid &g, const string fichier/*=""*/, vector<in
         vector<int> voisins;
         while (!file.empty())
         {
-            u = defileMinimum(file, gridLibrairies);
+            u = defileMinimum(file, gridLibrairies); //On traite le noeud le plus proche de la racine
 
-            voisins = vecVoisins(u, g);
+            voisins = vecVoisins(u, g); //On mets tous ces voisins dans un vecteur
 
             for (unsigned int i = 0; i < voisins.size(); i++) // parcourir tous voisins
             {
-                gridLibrairies.at(u)->fils.push_back(voisins.at(i));
-                if (gridLibrairies.at(voisins.at(i))->couleur == 'b')
+                // gridLibrairies.at(u)->fils.push_back(voisins.at(i));
+                if (gridLibrairies.at(voisins.at(i))->couleur == 'b') //Si le noeud n'a pas déjà été "considéré" (il est blanc)
                 {
-                    gridLibrairies.at(voisins.at(i))->couleur = 'g'; // gris indique qu'on a déjè "consideré" ce sommet
+                    gridLibrairies.at(voisins.at(i))->couleur = 'g'; // gris indique qu'on a déjà "consideré" ce sommet
 
-                    // verifier si le voisin appartient au site
+                    // Si sa distance au noeud racine qu'on traite est inférieur à la distance qu'il indique dans le tableau
                     if (gridLibrairies.at(voisins.at(i))->distance > g.distanceVoisin(voisins.at(i), u) + gridLibrairies[u]->distance)
                     {
-                        gridLibrairies.at(voisins.at(i))->pere = u;
-                        gridLibrairies.at(voisins.at(i))->distance = g.distanceVoisin(voisins.at(i), u) + gridLibrairies[u]->distance;
+                        gridLibrairies.at(voisins.at(i))->pere = u;                                                                    //u devient le père du noeud
+                        gridLibrairies.at(voisins.at(i))->distance = g.distanceVoisin(voisins.at(i), u) + gridLibrairies[u]->distance; //Il prend comme distance la distance jusqu'à u
                     }
 
-                    file.push_back(voisins.at(i));
+                    file.push_back(voisins.at(i)); //On enfile les voisins de u pour les traiter ensuite
                 }
             }
             gridLibrairies.at(u)->couleur = 'n'; // noir indique que ce sommet était traité
@@ -388,36 +382,34 @@ SitesLibrairies::SitesLibrairies(Grid &g, const string fichier/*=""*/, vector<in
 void SitesLibrairies::coloration(Grid &g, const vector<int> indiceDepart)
 {
     vector<int> indicesSuivants;
-    for (unsigned int m = 0; m < gridLibrairies.size(); m++)
-        for (unsigned int n = 0; n < indiceDepart.size(); n++)
-            if (gridLibrairies.at(m)->pere == indiceDepart.at(n))
+    for (unsigned int m = 0; m < gridLibrairies.size(); m++)      //On parcourt tous les noeuds
+        for (unsigned int n = 0; n < indiceDepart.size(); n++)    //On parcourt les pères
+            if (gridLibrairies.at(m)->pere == indiceDepart.at(n)) //Si un noeud est fils d'un de ces pères
             {
-                gridLibrairies.at(m)->coloration = gridLibrairies.at(indiceDepart.at(n))->coloration;
-
-                if (gridLibrairies.at(m)->fils.size() != 0)
-                    indicesSuivants.push_back(m);
+                gridLibrairies.at(m)->coloration = gridLibrairies.at(indiceDepart.at(n))->coloration; //Le noeud prend la couleur de son père
+                indicesSuivants.push_back(m);                                                         //On met ce noeud dans la file
             }
 
-    if (indicesSuivants.size() != 0)
-        coloration(g, indicesSuivants);
+    if (indicesSuivants.size() != 0)    //Si on a encore des fils à colorier
+        coloration(g, indicesSuivants); //On appelle la fonction avec comme "indicesSuivants" les noeuds qu'on vient de colorier et qui ont des fils
 }
 
 int SitesLibrairies::defileMinimum(vector<int> &f, vector<NoeudLibrairies *> gridLibrairies)
 {
-    float min = gridLibrairies.at(f.at(0))->distance;
+    float min = gridLibrairies.at(f.at(0))->distance; //On prend la distance du premier noeud comme distance minimale de départ
     int indice = f.at(0);
     int indiceFile = 0;
-    for (unsigned int i = 1; i < f.size(); i++)
+    for (unsigned int i = 1; i < f.size(); i++) //On parcourt tous les noeuds
     {
-        if (min > gridLibrairies.at(f.at(i))->distance)
+        if (min > gridLibrairies.at(f.at(i))->distance) //Si la distance d'un noeud au noeud racine est plus petite que la valeur minimale
         {
-            min = gridLibrairies.at(f.at(i))->distance;
+            min = gridLibrairies.at(f.at(i))->distance; //Ce noeud devient le minimum
             indice = f.at(i);
             indiceFile = i;
         }
     }
-    f.erase(f.begin() + indiceFile);
-    return indice;
+    f.erase(f.begin() + indiceFile); //On enleve le noeud minimum de la file puisqu'on va le traiter
+    return indice;                   //On renvoe l'indice du noeud qui a la distance à la racine minimale
 }
 
 void SitesLibrairies::affichage(const Grid g) const
@@ -425,17 +417,17 @@ void SitesLibrairies::affichage(const Grid g) const
     int n = 0;
     for (int i = 0; i < g.getLine(); i++) //On parcours les lignes
     {
-        for (int j = 0; j < g.getCol(); j++) //On parcours les(g.colonnes
+        for (int j = 0; j < g.getCol(); j++) //On parcours les colonnes
         {
 
-            if (gridLibrairies.at(n)->distance != 0)
+            if (gridLibrairies.at(n)->distance != 0) //Si ce n'est pas un noeud racine on l'affiche de sa couleur
             {
                 cout << "\033[1;" << gridLibrairies.at(n)->coloration << "m"
-                          << (int)gridLibrairies.at(n)->distance << "  "
-                          << "\033[0m";
+                     << (int)gridLibrairies.at(n)->distance << "  "
+                     << "\033[0m";
             }
             else
-                cout << gridLibrairies.at(n)->distance << " ";
+                cout << gridLibrairies.at(n)->distance << " "; //Si c'est un noeud racine on l'affiche en noir
             n++;
         }
 
