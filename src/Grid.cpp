@@ -34,9 +34,11 @@ Grid::Grid(const Grid &copie) //Constructeur par copie
     }
 }
 
-Grid::Grid(const string fichier) //Constructeur avec fichier
+Grid::Grid(string fichier) //Constructeur avec fichier
 {
     // ouvrir fichier
+    fichier = "data/" + fichier;
+    cout << fichier << endl;
     ifstream input(fichier);
 
     if (!input)
@@ -294,11 +296,12 @@ vector<int> SitesLibrairies::vecVoisins(const int indice, Grid graphe)
     return vec;
 }
 
-SitesLibrairies::SitesLibrairies(Grid &g, const string fichier /*=""*/, vector<int> indiceDepart /*=vector<int>()*/)
+SitesLibrairies::SitesLibrairies(Grid &g, string fichier /*=""*/, vector<int> indiceDepart /*=vector<int>()*/)
 {
     // remgridLibrairiesi indiceDepart avec valeurs du fichier si un fichier est donné
     if (fichier != "")
     {
+        fichier = "data/" + fichier;
         // ouvrir fichier
         ifstream input(fichier);
 
