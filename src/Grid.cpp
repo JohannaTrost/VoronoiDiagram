@@ -409,6 +409,7 @@ int SitesLibrairies::defileMinimum(vector<int> &f, vector<NoeudLibrairies *> gri
         }
     }
     f.erase(f.begin() + indiceFile); //On enleve le noeud minimum de la file puisqu'on va le traiter
+    f.shrink_to_fit();
     return indice;                   //On renvoe l'indice du noeud qui a la distance à la racine minimale
 }
 
