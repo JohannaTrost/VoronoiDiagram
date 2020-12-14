@@ -83,11 +83,11 @@ Grille du fichier grille.txt:
 	Librairies de la grille
 ------------------------------------------------------
 
-29  color:red 0 42  138  
+29  0 42  138  
 18  33  52  78  
-color:yellow 0 13  32  48  
+0 13  32  48  
 47  24  42  6  
-33  32  47  color:green 0
+33  32  47  0
 
 
 	La hauteur à (2,3) est: 44
