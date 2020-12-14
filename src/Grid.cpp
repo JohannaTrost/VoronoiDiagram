@@ -427,7 +427,7 @@ void SitesLibrairies::affichage(const Grid g) const
                      << (int)gridLibrairies.at(n)->distance << "  "
                      << "\033[0m";
             }
-            else
+            else //Si c'est un noeud racine on le surligne
                 cout << "\033[1;" << gridLibrairies.at(n)->coloration + 10 << "m"
                      << " " << (int)gridLibrairies.at(n)->distance << " "
                      << "\033[0m"
