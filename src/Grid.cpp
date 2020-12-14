@@ -34,11 +34,9 @@ Grid::Grid(const Grid &copie) //Constructeur par copie
     }
 }
 
-Grid::Grid(string fichier) //Constructeur avec fichier
+Grid::Grid(const string fichier) //Constructeur avec fichier
 {
     // ouvrir fichier
-    fichier = "data/" + fichier;
-    cout << fichier << endl;
     ifstream input(fichier);
 
     if (!input)
@@ -296,12 +294,11 @@ vector<int> SitesLibrairies::vecVoisins(const int indice, Grid graphe)
     return vec;
 }
 
-SitesLibrairies::SitesLibrairies(Grid &g, string fichier /*=""*/, vector<int> indiceDepart /*=vector<int>()*/)
+SitesLibrairies::SitesLibrairies(Grid &g, const string fichier /*=""*/, vector<int> indiceDepart /*=vector<int>()*/)
 {
     // remgridLibrairiesi indiceDepart avec valeurs du fichier si un fichier est donné
     if (fichier != "")
     {
-        fichier = "data/" + fichier;
         // ouvrir fichier
         ifstream input(fichier);
 
@@ -341,7 +338,6 @@ SitesLibrairies::SitesLibrairies(Grid &g, string fichier /*=""*/, vector<int> in
         {
             gridLibrairies.at(i)->couleur = 'b';
         }
-
         // init de point de départ
         gridLibrairies.at(indiceDepart.at(j))->pere = -1;
         gridLibrairies.at(indiceDepart.at(j))->couleur = 'n';
@@ -355,24 +351,25 @@ SitesLibrairies::SitesLibrairies(Grid &g, string fichier /*=""*/, vector<int> in
         while (!file.empty())
         {
             u = defileMinimum(file, gridLibrairies); //On traite le noeud le plus proche de la racine
+            int v;
 
             voisins = vecVoisins(u, g); //On mets tous ces voisins dans un vecteur
 
             for (unsigned int i = 0; i < voisins.size(); i++) // parcourir tous voisins
             {
-                // gridLibrairies.at(u)->fils.push_back(voisins.at(i));
-                if (gridLibrairies.at(voisins.at(i))->couleur == 'b') //Si le noeud n'a pas déjà été "considéré" (il est blanc)
+                v = voisins[i];
+                if (gridLibrairies[v]->couleur == 'b') //Si le noeud n'a pas déjà été "considéré" (il est blanc)
                 {
-                    gridLibrairies.at(voisins.at(i))->couleur = 'g'; // gris indique qu'on a déjà "consideré" ce sommet
+                    gridLibrairies[v]->couleur = 'g'; // gris indique qu'on a déjà "consideré" ce sommet
 
                     // Si sa distance au noeud racine qu'on traite est inférieur à la distance qu'il indique dans le tableau
-                    if (gridLibrairies.at(voisins.at(i))->distance > g.distanceVoisin(voisins.at(i), u) + gridLibrairies[u]->distance)
+                    if (gridLibrairies[v]->distance > g.distanceVoisin(v, u) + gridLibrairies[u]->distance)
                     {
-                        gridLibrairies.at(voisins.at(i))->pere = u;                                                                    //u devient le père du noeud
-                        gridLibrairies.at(voisins.at(i))->distance = g.distanceVoisin(voisins.at(i), u) + gridLibrairies[u]->distance; //Il prend comme distance la distance jusqu'à u
+                        gridLibrairies[v]->pere = u;                                                        //u devient le père du noeud
+                        gridLibrairies[v]->distance = g.distanceVoisin(v, u) + gridLibrairies[u]->distance; //Il prend comme distance la distance jusqu'à u
                     }
 
-                    file.push_back(voisins.at(i)); //On enfile les voisins de u pour les traiter ensuite
+                    file.push_back(v); //On enfile les voisins de u pour les traiter ensuite
                 }
             }
             gridLibrairies.at(u)->couleur = 'n'; // noir indique que ce sommet était traité
