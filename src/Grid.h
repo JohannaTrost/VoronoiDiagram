@@ -35,10 +35,6 @@ public:
     int pere;
     float distance;
     int coloration;
-
-    // bool operator<(const NoeudLibrairies &n2);
-
-    // bool operator>(const NoeudLibrairies &n2);
 };
 
 class Grid
@@ -151,10 +147,6 @@ private:
     void coloration(Grid &g, const vector<int> indiceDepart);
     //Précondition : grid g et gridLibrairies comprennent bien tous indices dans indiceDepart
     //Résultat : couleurs associées aux sites sont stocké dans membre coloration de neouds de gridLibrairies
-
-    int defileMinimum(vector<int> &f, std::vector<NoeudLibrairies> gridLibrairies);
-    // Précondition : f n'est pas vide
-    // Résultat : trouve, defile et retourne la distance min. des noeuds avec les indices dans la file f
 };
 
 #endif

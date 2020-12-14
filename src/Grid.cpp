@@ -331,22 +331,17 @@ SitesLibrairies::SitesLibrairies(Grid &g, const string fichier /*=""*/, vector<i
         gridLibrairies[indiceDepart[j]].distance = 0;
         gridLibrairies[indiceDepart[j]].coloration += j;
 
-        vector<int> file;
-
-        // auto cmp = [](int left, int right) {
-        //     return left < right;
-        // };
-        // priority_queue<int, vector<int>, decltype(cmp)> pq(cmp);
-
-        file.push_back(indiceDepart[j]);
-        // pq.push(indiceDepart[j]);
+        auto cmp = [](const pair<int, int> p1, const pair<int, int> p2) { //fonction qui permet de trouver l'indice du noeud ayant la plus petite distance
+            return (p1.second > p2.second);
+        };
+        priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(cmp)> pq(cmp); //Une file de paires<indices de noeud, distance>
+        pq.push(make_pair(indiceDepart[j], 0));
         int u; // indice du sommet traité actuellement
         vector<int> voisins;
-        while (!file.empty())
+        while (!pq.empty())
         {
-            u = defileMinimum(file, gridLibrairies);
-            // u = pq.top(); //On traite le noeud le plus proche de la racine
-            // pq.pop();
+            u = pq.top().first; //On traite le noeud le plus proche de la racine
+            pq.pop();
             int v;
 
             voisins = vecVoisins(u, g); //On mets tous ces voisins dans un vecteur
@@ -365,8 +360,7 @@ SitesLibrairies::SitesLibrairies(Grid &g, const string fichier /*=""*/, vector<i
                         gridLibrairies[v].distance = g.distanceVoisin(v, u) + gridLibrairies[u].distance; //Il prend comme distance la distance jusqu'à u
                     }
 
-                    // pq.push(v); //On enfile les voisins de u pour les traiter ensuite
-                    file.push_back(v);
+                    pq.push(make_pair(v, gridLibrairies[v].distance)); //On enfiles le voisins de u pour les traiter ensuite
                 }
             }
             gridLibrairies[u].couleur = 'n'; // noir indique que ce sommet était traité
@@ -389,28 +383,6 @@ void SitesLibrairies::coloration(Grid &g, const vector<int> indiceDepart)
 
     if (indicesSuivants.size() != 0)    //Si on a encore des fils à colorier
         coloration(g, indicesSuivants); //On appelle la fonction avec comme "indicesSuivants" les noeuds qu'on vient de colorier et qui ont des fils
-}
-
-int SitesLibrairies::defileMinimum(vector<int> &f, vector<NoeudLibrairies> gridLibrairies)
-{
-
-    float min = gridLibrairies[f[0]].distance; //On prend la distance du premier noeud comme distance minimale de départ
-    int indice = f[0];
-    int indiceFile = 0;
-    float x;
-    for (unsigned int i = 1; i < f.size(); i++) //On parcourt tous les noeuds
-    {
-        x = gridLibrairies[f[i]].distance;
-        if (min > x) //Si la distance d'un noeud au noeud racine est plus petite que la valeur minimale
-        {
-            min = x; //Ce noeud devient le minimum
-            indice = f[i];
-            indiceFile = i;
-        }
-    }
-    f.erase(f.begin() + indiceFile); //On enleve le noeud minimum de la file puisqu'on va le traiter
-    f.shrink_to_fit();
-    return indice; //On renvoe l'indice du noeud qui a la distance à la racine minimale
 }
 
 void SitesLibrairies::affichage(const Grid g) const
