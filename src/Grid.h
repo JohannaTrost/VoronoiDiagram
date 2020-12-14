@@ -8,6 +8,7 @@
 #ifndef _GRID
 #define _GRID
 #include <vector>
+#include <queue>
 #include <string>
 #include <fstream>
 #include <iterator>
@@ -34,6 +35,10 @@ public:
     int pere;
     float distance;
     int coloration;
+
+    // bool operator<(const NoeudLibrairies &n2);
+
+    // bool operator>(const NoeudLibrairies &n2);
 };
 
 class Grid
@@ -51,7 +56,7 @@ public:
     Grid(const Grid &copie);
 
     //Destructeur--------------------------------------------------------------
-    ~Grid();
+    // ~Grid();
 
     int getTaille() const;
 
@@ -119,8 +124,8 @@ public:
     //Résultat : revoie la distance euclidienne entre l'indice a et b en prenant en compte ses hauteurs
 
 private:
-    std::vector<Noeud *> g; //Le tableau 1D de noeuds
-    int col, line;          //Nombre de colonne et de lignes de la grille
+    std::vector<Noeud> g; //Le tableau 1D de noeuds
+    int col, line;        //Nombre de colonne et de lignes de la grille
 };
 
 class SitesLibrairies
@@ -133,9 +138,6 @@ public:
     //Paramètres : g grille, fichier nom du fichier txt avec les indices des sites "" par défaut,
     //             indiceDepart avec indices des sites par defaut vecteur vide
 
-    //Destructeur-----------------------------------------------------------------------------
-    ~SitesLibrairies();
-
     vector<int> vecVoisins(const int indice, Grid graphe);
     //Précondition : indice appartient à la grille
     //Résultat : vecteur qui contient les indice au nord, sud, est et ouest de l'indice en entrée
@@ -144,13 +146,13 @@ public:
     //Précondition : None
 
 private:
-    vector<NoeudLibrairies *> gridLibrairies; //Le tableau 1D de noeuds
+    vector<NoeudLibrairies> gridLibrairies; //Le tableau 1D de noeuds
 
     void coloration(Grid &g, const vector<int> indiceDepart);
     //Précondition : grid g et gridLibrairies comprennent bien tous indices dans indiceDepart
     //Résultat : couleurs associées aux sites sont stocké dans membre coloration de neouds de gridLibrairies
 
-    int defileMinimum(std::vector<int> &f, std::vector<NoeudLibrairies *> gridLibrairies);
+    int defileMinimum(vector<int> &f, std::vector<NoeudLibrairies> gridLibrairies);
     // Précondition : f n'est pas vide
     // Résultat : trouve, defile et retourne la distance min. des noeuds avec les indices dans la file f
 };
