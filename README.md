@@ -23,7 +23,7 @@ make
 Vous pouvez exécuter le programme avec au plus 4 et au moins 0 arguments [argv]. Il convient de mentionner que tous les arguments sont des arguments de position, ce qui signifie que l'ordre des arguments est fixe.  
 
 ###### `argv[1] <string>` - la grille
-exemple : `</chemin/vers/> ./bin/main magrille.txt `  
+exemple : `</chemin/vers/> ./bin/main data/magrille.txt `  
 
 Le fichier d'entré spécifient votre graphe de grille. Si vous ne voulez pas utiliser cet argument, votre grille sera générée de manière aléatoire. Dans ce cas, vous devez mettre `None` au lieu du nom du fichier, à moins que vous ne donniez d'autres arguments.  
 Sinon le fichier doit avoir un format spécifique pour que le programme fonctionne correctement. La première ligne du fichier correspond au nombre de colonnes et nombre de lignes de la grille qui suit. Ensuite, les chiffres dans la grille sont les "hauteurs" de chaque sommet du graphe.
@@ -53,10 +53,10 @@ Ces arguments spécifient une certaine ligne et une certaine colonne dans votre 
 ## Exemples d'exécution du programme
 
 ```./bin/main```
-```./bin/main grille.txt sites.txt```
+```./bin/main data/grille.txt sites.txt```
 ```./bin/main None None 1 2```
-```./bin/main grille.txt None 0 0```
-```./bin/main grille.txt sites.txt 2 3```
+```./bin/main data/grille.txt None 0 0```
+```./bin/main data/grille.txt data/sites.txt 2 3```
 ```./bin/main None sites.txt```
 
 
