@@ -413,13 +413,3 @@ void SitesLibrairies::affichage(const Grid g) const
         cout << endl;
     }
 }
-
-// bool NoeudLibrairies::operator<(const NoeudLibrairies &n2)
-// {
-//     return distance < n2.distance;
-// }
-
-// bool NoeudLibrairies::operator>(const NoeudLibrairies &n2)
-// {
-//     return distance > n2.distance;
-// }
