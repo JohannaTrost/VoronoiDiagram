@@ -53,39 +53,45 @@ Ces arguments spécifient une certaine ligne et une certaine colonne dans votre 
 ## Exemples d'exécution du programme
 
 ```./bin/main```
-```./bin/main data/grille.txt sites.txt```
+
+```./bin/main data/grille.txt data/sites.txt```
+
 ```./bin/main None None 1 2```
+
 ```./bin/main data/grille.txt None 0 0```
+
 ```./bin/main data/grille.txt data/sites.txt 2 3```
-```./bin/main None sites.txt```
+
+```./bin/main None data/sites.txt```
 
 
 ## Affichage des résultats
 
 En dessous se trouve le résultat produit par:
-```./bin/main grille.txt sites.txt 2 3```
+```./bin/main data/grille.txt data/sites.txt 2 3```
 
 
 ______________________________________________________
 	La grille
 ______________________________________________________
 Grille du fichier grille.txt:
-12  45  3  99  
-1  78  5  14  
-19  6  25  44  
-66  17  38  2  
-10  9  55  8  
+
+	12  45  03  99 	 
+	01  78  05  14  
+	19  06  25  44  
+	66  17  38  02  
+	10  09  55  08  
 ______________________________________________________
 	Librairies de la grille
 ______________________________________________________
-<span style="color:green">29</span> 0 <span style="color:red">42 138</span>  
-<span style="color:green">18</span>  <span style="color:red">33</span>  <span style="color:green">52</span>  <span style="color:orange">78</span>  
-0 <span style="color:green">13 32</span> <span style="color:orange">48</span>  
-<span style="color:blue">47  24</span> <span style="color:blue">42  6</span>    
-<span style="color:green">33  32</span> <span style="color:blue">47</span>  0
+<span style="color:red">33</span> 0 <span style="color:red">42 138</span>  
+<span style="color:red">44</span>  <span style="color:red">33</span>  <span style="color:red">106</span>  <span style="color:yellow">78</span>  
+<span style="color:green">47 60 </span> <span style="color:yellow">55 48</span>  
+ 0 <span style="color:green">49  42</span> <span style="color:yellow">6</span>    
+<span style="color:green">56  57</span> <span style="color:yellow">47</span>  0
 
 	La hauteur à (2,3) est: 44
 	La hauteur à l'ouest est: 25
 	La hauteur au nord est: 14
-	Pas de sommet à l'est
-	La hauteur au sud est: 2
+	Pas de sommet à l'est 
+	La hauteur au sud est: 02
